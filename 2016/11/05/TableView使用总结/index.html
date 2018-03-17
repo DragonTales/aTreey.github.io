@@ -5,18 +5,19 @@
   
 
   
-  <title>Hello World | Hexo</title>
+  <title>TableView 使用 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="tableView 使用总结 字典的 key enumerator 的使用  tableViewCell 的 selected 方法可以监听cell 的选中, 使用selected 参数  网络慢时点击左边cell右边数据不能及时刷新， 用户看到的还是上一个cell显示的数据  解决办法: 在网络加载之前就reload数据，让显示空白   点击左边的cell时 上拉加载更多控件的显示和隐藏逻辑">
+<meta name="keywords" content="TableView">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2018/03/17/hello-world/index.html">
+<meta property="og:title" content="TableView 使用">
+<meta property="og:url" content="http://yoursite.com/2016/11/05/TableView使用总结/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta property="og:updated_time" content="2018-03-17T12:02:09.460Z">
+<meta property="og:description" content="tableView 使用总结 字典的 key enumerator 的使用  tableViewCell 的 selected 方法可以监听cell 的选中, 使用selected 参数  网络慢时点击左边cell右边数据不能及时刷新， 用户看到的还是上一个cell显示的数据  解决办法: 在网络加载之前就reload数据，让显示空白   点击左边的cell时 上拉加载更多控件的显示和隐藏逻辑">
+<meta property="og:updated_time" content="2018-03-17T04:19:58.031Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="TableView 使用">
+<meta name="twitter:description" content="tableView 使用总结 字典的 key enumerator 的使用  tableViewCell 的 selected 方法可以监听cell 的选中, 使用selected 参数  网络慢时点击左边cell右边数据不能及时刷新， 用户看到的还是上一个cell显示的数据  解决办法: 在网络加载之前就reload数据，让显示空白   点击左边的cell时 上拉加载更多控件的显示和隐藏逻辑">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -63,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-TableView使用总结" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/03/17/hello-world/" class="article-date">
-  <time datetime="2018-03-17T12:02:09.460Z" itemprop="datePublished">2018-03-17</time>
+    <a href="/2016/11/05/TableView使用总结/" class="article-date">
+  <time datetime="2016-11-05T14:59:46.000Z" itemprop="datePublished">2016-11-05</time>
 </a>
     
   </div>
@@ -77,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      TableView 使用
     </h1>
   
 
@@ -85,32 +86,100 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <h2 id="tableView-使用总结"><a href="#tableView-使用总结" class="headerlink" title="tableView 使用总结"></a>tableView 使用总结</h2><ul>
+<li><p>字典的 key enumerator 的使用</p>
+</li>
+<li><p>tableViewCell 的 selected 方法可以监听cell 的选中, 使用selected 参数</p>
+</li>
+<li><p>网络慢时点击左边cell右边数据不能及时刷新， 用户看到的还是上一个cell显示的数据</p>
+<ul>
+<li>解决办法: 在网络加载之前就reload数据，让显示空白</li>
+</ul>
+</li>
+<li><p>点击左边的cell时 上拉加载更多控件的显示和隐藏逻辑</p>
+<ul>
+<li>解决办法: 在每次刷新右边数据时，控制footer的显示</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>在numberOfRowsInSection方法中控制</p>
+</li>
+<li><p>每次点击cell之前要结束上一个没有刷新完的，防止奔溃</p>
+</li>
+<li><p>加载更多时</p>
+<p>  在加载第一页时设置currentPage为1，在加载更多的逻辑中 ++currentPage<br>  点击cell加载时上一个加载更多的网络数据还没有回来，在当前请求之前结束掉所有的网络请求<br>  停止之后的刷新控件状态会有错误，没有更多还是还可以加载状态不确定<br>  在点击左边cell后刷新右边的之前需要检查右边tableView 的footer的状态<br>  下拉刷新</p>
+</li>
+<li><p>第一次下拉刷新之后，第二次下拉刷新，将数据添加到数组中会导致两次数据重复</p>
+<ul>
+<li>解决办法：清除以前的所有数据</li>
+</ul>
+</li>
+<li><p>下拉刷新完毕后结束刷新后需要检查footer的状态</p>
+</li>
+<li><p>网络慢时连续点击cell，连发多个请求成功回调时数据显示错乱，或者是数据已经回来了但是还是显示上一个请求正在请求。。。</p>
+<ul>
+<li>解决办法：点击左边某个类别时，结束所有的刷新（上拉和下拉）</li>
+</ul>
+</li>
+<li><p>连续点击发送请求</p>
+<ul>
+<li>解决办法：保存请求参数， 比较上一次参数和当前参数， 如果 ！= 直接return，不让进入成功回调解析数据， 失败的时候也是同样 return，不提示用户</li>
+</ul>
+</li>
+<li><p>控制器正在请求数据时控制器销毁， 导致奔溃</p>
+<ul>
+<li>解决办法：在dealloc 中停止所有的操作</li>
+</ul>
+</li>
+</ul>
+<h2 id="cell-的frame-设置"><a href="#cell-的frame-设置" class="headerlink" title="cell 的frame 设置"></a>cell 的frame 设置</h2><ul>
+<li><p>cell 之间的间隙以及cell的边距 重写frame 在super 之前设置</p>
+<ul>
+<li>设置frame 的x ，width， height 等属性</li>
+</ul>
+</li>
+<li><p>分页的2种做法</p>
+<ul>
+<li><p>下拉刷新</p>
+<p>  page 加载最新的 加载第一页 浪费用户的流量<br>  加载比当前更新的数据， 需要服务器支持，将当前最新的数据id发送给服务器，服务器加载比当前id还大的数据插入到最前面</p>
+</li>
+<li><p>上拉加载</p>
+<p>  将页码发给服务器</p>
+<p>  将最后面的数据的id发给服务器，</p>
+<p>  加载比当前id更小的数据</p>
+</li>
+</ul>
+</li>
+</ul>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/17/hello-world/" data-id="cjevclpha001adc51nfsy9y1u" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2016/11/05/TableView使用总结/" data-id="cjevclph50011dc51pbcqdk9j" class="article-share-link">Teilen</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TableView/">TableView</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
+    <a href="/2016/11/20/git学习总结/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          git 使用
+        
+      </div>
+    </a>
   
-    <a href="/2018/02/03/Mac安装VirtualBox连接U盘/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2016/11/05/Hexo个人博客搭建/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Älter</strong>
-      <div class="article-nav-title">Mac安装VirtualBox连接U盘</div>
+      <div class="article-nav-title">Hexo个人博客搭建</div>
     </a>
   
 </nav>

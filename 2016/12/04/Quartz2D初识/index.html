@@ -5,18 +5,19 @@
   
 
   
-  <title>Hello World | Hexo</title>
+  <title>Quartz2D 初识 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="Quartz2D 二维绘图引擎，支持iOS和Mac系统么，可以实现的功能有  绘制图形: 线条，三角形，矩形，圆，弧等 绘制文字 绘制图像或者图片 读取生成PDF 截图/裁剪图片 自定义UI控件 手势解锁 图形上下文  保存绘图信息和状态确定输出目标(PDF,Bitmap或者显示器) Bitmap Graphics Context PDF Granhics Context Window Graph">
+<meta name="keywords" content="Quartz2D">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2018/03/17/hello-world/index.html">
+<meta property="og:title" content="Quartz2D 初识">
+<meta property="og:url" content="http://yoursite.com/2016/12/04/Quartz2D初识/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta property="og:updated_time" content="2018-03-17T12:02:09.460Z">
+<meta property="og:description" content="Quartz2D 二维绘图引擎，支持iOS和Mac系统么，可以实现的功能有  绘制图形: 线条，三角形，矩形，圆，弧等 绘制文字 绘制图像或者图片 读取生成PDF 截图/裁剪图片 自定义UI控件 手势解锁 图形上下文  保存绘图信息和状态确定输出目标(PDF,Bitmap或者显示器) Bitmap Graphics Context PDF Granhics Context Window Graph">
+<meta property="og:updated_time" content="2018-03-17T04:19:58.026Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="Quartz2D 初识">
+<meta name="twitter:description" content="Quartz2D 二维绘图引擎，支持iOS和Mac系统么，可以实现的功能有  绘制图形: 线条，三角形，矩形，圆，弧等 绘制文字 绘制图像或者图片 读取生成PDF 截图/裁剪图片 自定义UI控件 手势解锁 图形上下文  保存绘图信息和状态确定输出目标(PDF,Bitmap或者显示器) Bitmap Graphics Context PDF Granhics Context Window Graph">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -63,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-Quartz2D初识" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/03/17/hello-world/" class="article-date">
-  <time datetime="2018-03-17T12:02:09.460Z" itemprop="datePublished">2018-03-17</time>
+    <a href="/2016/12/04/Quartz2D初识/" class="article-date">
+  <time datetime="2016-12-04T05:34:28.000Z" itemprop="datePublished">2016-12-04</time>
 </a>
     
   </div>
@@ -77,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      Quartz2D 初识
     </h1>
   
 
@@ -85,32 +86,162 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <p><strong>Quartz2D 二维绘图引擎，支持iOS和Mac系统么，可以实现的功能有</strong></p>
+<ul>
+<li>绘制图形: 线条，三角形，矩形，圆，弧等</li>
+<li>绘制文字</li>
+<li>绘制图像或者图片</li>
+<li>读取生成PDF</li>
+<li>截图/裁剪图片</li>
+<li>自定义UI控件</li>
+<li>手势解锁</li>
+<li>图形上下文</li>
+</ul>
+<h2 id="保存绘图信息和状态"><a href="#保存绘图信息和状态" class="headerlink" title="保存绘图信息和状态"></a>保存绘图信息和状态</h2><p>确定输出目标(PDF,Bitmap或者显示器)</p>
+<pre><code>Bitmap Graphics Context
+PDF Granhics Context
+Window Graphics Context
+Layer Graphics Context
+</code></pre><p>绘制线段</p>
+<pre><code>- (void)drawLine {
+    // 获取图形上下文
+    // 所用的是UIGraphics上下文
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
 
+    // 创建描述路径
+    CGMutablePathRef path = CGPathCreateMutable();
+    // 设置起点
+    // path : 表示给那个路径设置起点
+    CGPathMoveToPoint(path, NULL, 10, 10);
+    CGPathAddLineToPoint(path, NULL, 80, 80);
+
+    // 添加路径到上下文
+    CGContextAddPath(ctx, path);
+
+    // 渲染
+    CGContextStrokePath(ctx);
+}
+</code></pre><p>系统底层自动将路径添加到图形上下文</p>
+<pre><code>- (void)drawLine2 {
+
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+    // 描述路径
+    // 此方法底层会自动将路径添加到图形上下文
+    CGContextMoveToPoint(ctx, 50, 50);
+    CGContextAddLineToPoint(ctx, 100, 100);
+
+    CGContextSetLineWidth(ctx, 5);
+
+    [[UIColor redColor] set];
+    // 渲染
+    CGContextStrokePath(ctx);
+}
+</code></pre><p>使用C语言函数的封装</p>
+<pre><code>- (void)drawLine3 {
+    // 使用UIKit 已经封装的功能,面向对象
+    // 贝塞尔路径
+
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(10, 10)];
+    [path addLineToPoint:CGPointMake(50, 50)];
+
+    // 绘制路径
+    [path stroke];
+}
+</code></pre><p>绘制多条线段</p>
+<ul>
+<li>绘制多条线,状态不好管理</li>
+<li>默认下一条线的起点是上一条线的终点</li>
+<li>绘制多天不连接的线时需要重新设置起点</li>
+<li>为了方便管理，应该让每一条线对应一条路径</li>
+<li>使用UIBeizerPath</li>
+</ul>
+<p>code:</p>
+<pre><code>- (void)drawMoreLine {
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+    // 描述路径
+    CGContextMoveToPoint(ctx, 20, 20);
+    CGContextAddLineToPoint(ctx, 100, 100);
+
+    // 设置第二条线的起点
+    CGContextMoveToPoint(ctx, 20, 30);
+    CGContextAddLineToPoint(ctx, 150, 100);
+
+    // 设置绘图状态要在渲染之前,都是给上下文设置
+    // 描边颜色
+    [[UIColor greenColor] setStroke];
+    // 线宽
+    CGContextSetLineWidth(ctx, 10);
+    // 连接样式
+    // kCGLineJoinMiter,    斜接
+    // kCGLineJoinRound,    圆角
+    // kCGLineJoinBevel     平切
+    CGContextSetLineJoin(ctx, kCGLineJoinBevel);
+    // 顶角样式,线的顶端效果
+    CGContextSetLineCap(ctx, kCGLineCapRound);
+
+    // 渲染
+    CGContextStrokePath(ctx);
+}
+</code></pre><p>使用UIBezierPath 绘制多条直线并设置不同状态</p>
+<pre><code>- (void)drawUIBezierPahtState {
+
+    // 第一条线
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(10, 10)];
+    [path addLineToPoint:CGPointMake(80, 80)];
+
+    path.lineWidth = 20;
+    path.lineJoinStyle = kCGLineJoinRound;
+    path.lineCapStyle = kCGLineCapRound;
+    [[UIColor redColor] setStroke];
+
+    [path stroke];
+
+    // 第二条线
+    {
+        UIBezierPath *path = [UIBezierPath bezierPath];
+        [path moveToPoint:CGPointMake(40, 70)];
+        [path addLineToPoint:CGPointMake(150, 40)];
+
+        path.lineWidth = 20;
+        path.lineJoinStyle = kCGLineJoinRound;
+        path.lineCapStyle = kCGLineCapRound;
+        [[UIColor greenColor] setStroke];
+
+        [path stroke];
+    }
+}
+</code></pre>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/17/hello-world/" data-id="cjevclpha001adc51nfsy9y1u" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2016/12/04/Quartz2D初识/" data-id="cjevclpgt000edc51u3j9gdvq" class="article-share-link">Teilen</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
+    <a href="/2016/12/04/Quartz2D绘制曲线/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          Quartz2D绘制曲线
+        
+      </div>
+    </a>
   
-    <a href="/2018/02/03/Mac安装VirtualBox连接U盘/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2016/11/22/Quartz2D绘制线条/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Älter</strong>
-      <div class="article-nav-title">Mac安装VirtualBox连接U盘</div>
+      <div class="article-nav-title">WKWebiView 使用</div>
     </a>
   
 </nav>

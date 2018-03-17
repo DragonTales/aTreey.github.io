@@ -5,18 +5,19 @@
   
 
   
-  <title>Hello World | Hexo</title>
+  <title>iOS 弹框视图 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="UIActionSheet UIAlertView UIAlertViewController 的区别 UIActionSheet iOS 8.3 之后过期 模态弹出，显示在试图的底部 类似菜单提供选择  12UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@&amp;quot;title&amp;quot; delegate:s">
+<meta name="keywords" content="AlertView">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2018/03/17/hello-world/index.html">
+<meta property="og:title" content="iOS 弹框视图">
+<meta property="og:url" content="http://yoursite.com/2016/10/27/iOS弹框式图/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta property="og:updated_time" content="2018-03-17T12:02:09.460Z">
+<meta property="og:description" content="UIActionSheet UIAlertView UIAlertViewController 的区别 UIActionSheet iOS 8.3 之后过期 模态弹出，显示在试图的底部 类似菜单提供选择  12UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@&amp;quot;title&amp;quot; delegate:s">
+<meta property="og:updated_time" content="2018-03-17T04:19:58.035Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="iOS 弹框视图">
+<meta name="twitter:description" content="UIActionSheet UIAlertView UIAlertViewController 的区别 UIActionSheet iOS 8.3 之后过期 模态弹出，显示在试图的底部 类似菜单提供选择  12UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@&amp;quot;title&amp;quot; delegate:s">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -63,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-iOS弹框式图" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/03/17/hello-world/" class="article-date">
-  <time datetime="2018-03-17T12:02:09.460Z" itemprop="datePublished">2018-03-17</time>
+    <a href="/2016/10/27/iOS弹框式图/" class="article-date">
+  <time datetime="2016-10-26T16:58:20.000Z" itemprop="datePublished">2016-10-27</time>
 </a>
     
   </div>
@@ -77,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      iOS 弹框视图
     </h1>
   
 
@@ -85,32 +86,55 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
+        <p><strong><code>UIActionSheet</code> <code>UIAlertView</code> <code>UIAlertViewController</code> 的区别</strong></p>
+<h2 id="UIActionSheet"><a href="#UIActionSheet" class="headerlink" title="UIActionSheet"></a>UIActionSheet</h2><ul>
+<li>iOS 8.3 之后过期</li>
+<li>模态弹出，显示在试图的底部 类似菜单提供选择</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@&quot;title&quot; delegate:self cancelButtonTitle:@&quot;取消&quot; destructiveButtonTitle:nil otherButtonTitles:@&quot;按钮1&quot;, @&quot;按钮2&quot;, nil];</span><br><span class="line">[actionSheet showInView:self.view];</span><br></pre></td></tr></table></figure>
+<h2 id="UIAlertView"><a href="#UIAlertView" class="headerlink" title="UIAlertView"></a>UIAlertView</h2><ul>
+<li>iOS 9.0 之后过期</li>
+<li>模态弹出，显示在试图的中间位置 类似一个对话框提供选择</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@&quot;考勤方式&quot; message:nil delegate:self cancelButtonTitle:@&quot;取消&quot; otherButtonTitles:faceBtn, fingerPrintBtn, nil];</span><br><span class="line">[alertView show];</span><br></pre></td></tr></table></figure>
+<h2 id="UIAlertViewController"><a href="#UIAlertViewController" class="headerlink" title="UIAlertViewController"></a>UIAlertViewController</h2><ul>
+<li>iOS 8.0 起可以使用</li>
+<li><code>style</code> : 默认样式, 类似 <code>UIActionSheet</code> 列表形式 </li>
+<li><code>style</code> 为：<code>UIAlertControllerStyleAlert</code> 对话框形式</li>
+<li>设置按钮的样式</li>
+</ul>
+<p>如果修改 UIAlertAction 中stye 为：</p>
+<p>UIAlertActionStyleCancel<br>取消按钮会和其他按钮分开</p>
+<p>如果修改 UIAlertAction 中stye 为：</p>
+<p>UIAlertActionStyleDestructive<br>取消按钮会以红色警告的方式显示， 但是按钮之间不会分开</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">UIAlertController *alert = [UIAlertController alertControllerWithTitle:@&quot;考勤方式&quot; message:nil preferredStyle:UIAlertControllerStyleActionSheet];</span><br><span class="line">UIAlertAction *faceBtn = [UIAlertAction actionWithTitle:@&quot;人脸识别&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) &#123;	&#125;];</span><br><span class="line"></span><br><span class="line">UIAlertAction *fingerPrintBtn = [UIAlertAction actionWithTitle:@&quot;指纹认证&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) &#123;</span><br><span class="line"></span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">UIAlertAction *cancelBtn = [UIAlertAction actionWithTitle:@&quot;取消&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) &#123;</span><br><span class="line"></span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[alert addAction:faceBtn];</span><br><span class="line">[alert addAction:fingerPrintBtn];</span><br><span class="line">[alert addAction:cancelBtn];</span><br><span class="line">[self presentViewController:alert animated:YES completion:nil];</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/17/hello-world/" data-id="cjevclpha001adc51nfsy9y1u" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2016/10/27/iOS弹框式图/" data-id="cjevclph80017dc519bl923us" class="article-share-link">Teilen</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AlertView/">AlertView</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
+    <a href="/2016/11/05/Hexo个人博客搭建/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          Hexo个人博客搭建
+        
+      </div>
+    </a>
   
-    <a href="/2018/02/03/Mac安装VirtualBox连接U盘/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2016/10/20/本地缓存/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Älter</strong>
-      <div class="article-nav-title">Mac安装VirtualBox连接U盘</div>
+      <div class="article-nav-title">本地缓存</div>
     </a>
   
 </nav>

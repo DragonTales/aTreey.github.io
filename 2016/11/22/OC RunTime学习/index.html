@@ -5,18 +5,19 @@
   
 
   
-  <title>Hello World | Hexo</title>
+  <title>OC中运行时 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="RunTime对于C语言，函数的调用在编译的时候会决定调用哪个函数，而对于面向对象的语言对于[调用某个对象的方法或函数]就叫「消息传递」。所以在 Java，C++ 这些语言里[调用某个对象的方法或函数]和 Objective-C 里[向某个对象发送消息]在概念上就是一样的事情, RunTime 简介 RunTime 简称运行时，OC中通常叫运行时机制，主要的是消息机制 消息机制：在OC中，属于动态">
+<meta name="keywords" content="RunTime">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2018/03/17/hello-world/index.html">
+<meta property="og:title" content="OC中运行时">
+<meta property="og:url" content="http://yoursite.com/2016/11/22/OC RunTime学习/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta property="og:updated_time" content="2018-03-17T12:02:09.460Z">
+<meta property="og:description" content="RunTime对于C语言，函数的调用在编译的时候会决定调用哪个函数，而对于面向对象的语言对于[调用某个对象的方法或函数]就叫「消息传递」。所以在 Java，C++ 这些语言里[调用某个对象的方法或函数]和 Objective-C 里[向某个对象发送消息]在概念上就是一样的事情, RunTime 简介 RunTime 简称运行时，OC中通常叫运行时机制，主要的是消息机制 消息机制：在OC中，属于动态">
+<meta property="og:updated_time" content="2018-03-17T04:19:58.025Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="OC中运行时">
+<meta name="twitter:description" content="RunTime对于C语言，函数的调用在编译的时候会决定调用哪个函数，而对于面向对象的语言对于[调用某个对象的方法或函数]就叫「消息传递」。所以在 Java，C++ 这些语言里[调用某个对象的方法或函数]和 Objective-C 里[向某个对象发送消息]在概念上就是一样的事情, RunTime 简介 RunTime 简称运行时，OC中通常叫运行时机制，主要的是消息机制 消息机制：在OC中，属于动态">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -63,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-OC RunTime学习" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/03/17/hello-world/" class="article-date">
-  <time datetime="2018-03-17T12:02:09.460Z" itemprop="datePublished">2018-03-17</time>
+    <a href="/2016/11/22/OC RunTime学习/" class="article-date">
+  <time datetime="2016-11-22T03:10:31.000Z" itemprop="datePublished">2016-11-22</time>
 </a>
     
   </div>
@@ -77,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      OC中运行时
     </h1>
   
 
@@ -85,32 +86,48 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
-
+        <p>RunTime<br>对于C语言，函数的调用在编译的时候会决定调用哪个函数，而对于面向对象的语言对于[调用某个对象的方法或函数]就叫「消息传递」。所以在 Java，C++ 这些语言里[调用某个对象的方法或函数]和 Objective-C 里[向某个对象发送消息]在概念上就是一样的事情,</p>
+<h3 id="RunTime-简介"><a href="#RunTime-简介" class="headerlink" title="RunTime 简介"></a>RunTime 简介</h3><ul>
+<li>RunTime 简称运行时，OC中通常叫运行时机制，主要的是消息机制</li>
+<li>消息机制：在OC中，属于动态调用，在编译的时候并不能决定真正调用哪个函数，只有在真正运行的时候才会根据函数的名称找到对应的函数来调用</li>
+</ul>
+<h3 id="RunTime-作用"><a href="#RunTime-作用" class="headerlink" title="RunTime 作用"></a>RunTime 作用</h3><ul>
+<li>发送消息：让对象发送消息</li>
+<li>交换方法</li>
+<li>动态添加方法</li>
+<li>动态获取属性和方法</li>
+<li>字典转模型</li>
+<li>给分类添加属性</li>
+</ul>
+<p>原理：给分类添加一个属性,重写了setter、getter方法，但是没有生成 _成员变量，需要通过运行时关联到分类中， 其本质上就是给这个类添加关联,存值和取值<br>code</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">self.oldurlPath = urlPath;</span><br><span class="line"></span><br><span class="line">- (void)setOldurlPath:(NSString *)oldurlPath &#123;</span><br><span class="line"></span><br><span class="line">// RunTime 关联</span><br><span class="line">// 第一个参数：给哪个对象添加关联</span><br><span class="line">// 第二个参数：关联的key，通过这个key获取</span><br><span class="line">// 第三个参数：关联的value</span><br><span class="line">// 第四个参数:关联的策略</span><br><span class="line">objc_setAssociatedObject(self, key, oldurlPath, OBJC_ASSOCIATION_COPY_NONATOMIC);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSString *)oldurlPath &#123;</span><br><span class="line">    return objc_getAssociatedObject(self, key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/17/hello-world/" data-id="cjevclpha001adc51nfsy9y1u" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2016/11/22/OC RunTime学习/" data-id="cjevclpgq000adc514nvo2cgb" class="article-share-link">Teilen</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RunTime/">RunTime</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
+    <a href="/2016/11/22/Swift3.0学习(四)/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          WKWebiView 使用
+        
+      </div>
+    </a>
   
-    <a href="/2018/02/03/Mac安装VirtualBox连接U盘/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2016/11/20/git学习总结/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Älter</strong>
-      <div class="article-nav-title">Mac安装VirtualBox连接U盘</div>
+      <div class="article-nav-title">git 使用</div>
     </a>
   
 </nav>

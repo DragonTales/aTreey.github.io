@@ -5,18 +5,19 @@
   
 
   
-  <title>Hello World | Hexo</title>
+  <title>WKWebiView 使用 | Hexo</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-  <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+  <meta name="description" content="iOS中静态库动态库介绍及编译 静态库  iOS中根据源码的公开情况可分为2种  开源库源代码公开，能够看到具体的代码实现  比如 SDWebImage AFNetworking。。。  闭源库不公开源代码， 是经过编译后的二进制文件， 看不到具体实现主要分为：静态库、动态库  存在形式   静态库： .a 和 .framework动态库：.tbd 和 .framework (iOS 9 之前是">
+<meta name="keywords" content="WKWebView">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2018/03/17/hello-world/index.html">
+<meta property="og:title" content="WKWebiView 使用">
+<meta property="og:url" content="http://yoursite.com/2017/02/02/iOS静态库动态库/index.html">
 <meta property="og:site_name" content="Hexo">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
-<meta property="og:updated_time" content="2018-03-17T12:02:09.460Z">
+<meta property="og:description" content="iOS中静态库动态库介绍及编译 静态库  iOS中根据源码的公开情况可分为2种  开源库源代码公开，能够看到具体的代码实现  比如 SDWebImage AFNetworking。。。  闭源库不公开源代码， 是经过编译后的二进制文件， 看不到具体实现主要分为：静态库、动态库  存在形式   静态库： .a 和 .framework动态库：.tbd 和 .framework (iOS 9 之前是">
+<meta property="og:updated_time" content="2018-03-17T04:19:58.035Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub. Quick">
+<meta name="twitter:title" content="WKWebiView 使用">
+<meta name="twitter:description" content="iOS中静态库动态库介绍及编译 静态库  iOS中根据源码的公开情况可分为2种  开源库源代码公开，能够看到具体的代码实现  比如 SDWebImage AFNetworking。。。  闭源库不公开源代码， 是经过编译后的二进制文件， 看不到具体实现主要分为：静态库、动态库  存在形式   静态库： .a 和 .framework动态库：.tbd 和 .framework (iOS 9 之前是">
   
     <link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
   
@@ -63,10 +64,10 @@
   </div>
 </header>
       <div class="outer">
-        <section id="main"><article id="post-hello-world" class="article article-type-post" itemscope itemprop="blogPost">
+        <section id="main"><article id="post-iOS静态库动态库" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
-    <a href="/2018/03/17/hello-world/" class="article-date">
-  <time datetime="2018-03-17T12:02:09.460Z" itemprop="datePublished">2018-03-17</time>
+    <a href="/2017/02/02/iOS静态库动态库/" class="article-date">
+  <time datetime="2017-02-02T14:15:40.000Z" itemprop="datePublished">2017-02-02</time>
 </a>
     
   </div>
@@ -77,7 +78,7 @@
         
   
     <h1 class="article-title" itemprop="name">
-      Hello World
+      WKWebiView 使用
     </h1>
   
 
@@ -85,32 +86,73 @@
     
     <div class="article-entry" itemprop="articleBody">
       
-        <p>Welcome to <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="noopener">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="noopener">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="noopener">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="noopener">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="noopener">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="noopener">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="noopener">Deployment</a></p>
+        <h3 id="iOS中静态库动态库介绍及编译"><a href="#iOS中静态库动态库介绍及编译" class="headerlink" title="iOS中静态库动态库介绍及编译"></a>iOS中静态库动态库介绍及编译</h3><ul>
+<li>静态库</li>
+</ul>
+<p>iOS中根据源码的公开情况可分为2种</p>
+<ul>
+<li>开源库<br>源代码公开，能够看到具体的代码实现</li>
+</ul>
+<p>比如 SDWebImage AFNetworking。。。</p>
+<ul>
+<li><p>闭源库<br>不公开源代码， 是经过编译后的二进制文件， 看不到具体实现<br>主要分为：静态库、动态库</p>
+</li>
+<li><p>存在形式</p>
+</li>
+</ul>
+<p>静态库： .a 和 .framework<br>动态库：.tbd 和 .framework (iOS 9 之前是 .dylib, iOS 9 之后取消了 .dylib 而使用 .tbd 来代替 .dylib )</p>
+<p>.framework 的库可以是静态库也可以是静态库， 凡是系统的 .framework 都是动态库，第三方的基本上全是静态中</p>
+<ul>
+<li>两者区别</li>
+</ul>
+<p>静态库：链接时会被完整的复制到可执行文件中，每次被使用都会被复制<br>动态库：链接时不复制，程序运行时由系统动态加载到内存中，供程序调用，系统只加载一次，多个程序可以公用，节省内存</p>
+<h3 id="静态库编译"><a href="#静态库编译" class="headerlink" title="静态库编译"></a>静态库编译</h3><p>编译时如果使用的是模拟器，生成的 .a 只能模拟器用，真机不可用，生成的 .a 文件在 Debug-iphonesimulator 文件夹下</p>
+<p>编译时如果使用 generic iOS Device，生成的 .a 只能真机而模拟器不可用，生成的 .a 文件在 Debug-iphoneos 文件夹下</p>
+<p>编译静态库时，自己手动创建的类的头文件不会被导出，只是默认导出创建工程时类的头文件</p>
+<p>导出手动添加类的头文件，点击工程名称 –&gt; build Phases –&gt; Copy Files 添加头文件，然后编译</p>
+<ul>
+<li>架构种类</li>
+</ul>
+<p>模拟器：i386 32位架构 (4s~5) ／ x86_64 64位架构 (5s以后机型)<br>真机：armv7 32位架构 (4~4s) ／ armv7s 特殊架构 (5~5C) ／ arm64 64位架构 (5s 以后机型)</p>
+<ul>
+<li><p>架构查看<br>lipo -info xxxx.a<br>默认生成模拟器只生成一种架构 i386 x86_64；真机默认导出两种架构 armv7 ／ arm64</p>
+</li>
+<li><p>合并多个架构</p>
+</li>
+</ul>
+<p>将模拟器的多个架构合并，项目名称–&gt;Build Settings –&gt; Achitectures –&gt; Build Active Architecture Only –&gt; Debug设置为NO<br>合并真机多个架构 按照以上方法运行真机即可<br>合并真机和模拟器架构 cd products lipo -create Debug-iphoneos/xxx.a Debug-iphonessimulator/xxx.a -output xx.a<br>合成 5 个架构 在Build Setting –&gt; Architectures 中手动添加三种架构,再编译合并</p>
+<ul>
+<li>静态库报错</li>
+</ul>
+<p>Undefined symbols for architecture （arm64 ／ armv7 ／ armv7s ／ i386 ／ x86_64），架构包导入出错，静态库有真机与模拟器</p>
 
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://yoursite.com/2018/03/17/hello-world/" data-id="cjevclpha001adc51nfsy9y1u" class="article-share-link">Teilen</a>
+      <a data-url="http://yoursite.com/2017/02/02/iOS静态库动态库/" data-id="cjevclphc001ddc51nwhk1i2l" class="article-share-link">Teilen</a>
       
       
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
+
     </footer>
   </div>
   
     
 <nav id="article-nav">
   
+    <a href="/2017/02/08/SDWebImage学习/" id="article-nav-newer" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Neuer</strong>
+      <div class="article-nav-title">
+        
+          SDWebImage的用法及原理
+        
+      </div>
+    </a>
   
-    <a href="/2018/02/03/Mac安装VirtualBox连接U盘/" id="article-nav-older" class="article-nav-link-wrap">
+  
+    <a href="/2017/01/18/异步下载图片/" id="article-nav-older" class="article-nav-link-wrap">
       <strong class="article-nav-caption">Älter</strong>
-      <div class="article-nav-title">Mac安装VirtualBox连接U盘</div>
+      <div class="article-nav-title">异步下载图片</div>
     </a>
   
 </nav>
