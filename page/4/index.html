@@ -61,6 +61,894 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-GCD实现按钮定时亮起" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/05/GCD实现按钮定时亮起/" class="article-date">
+  <time datetime="2016-12-05T15:59:45.000Z" itemprop="datePublished">2016-12-05</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/05/GCD实现按钮定时亮起/">GCD实现按钮定时亮起</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>某些时候需要按钮不能连续点击，需要在一定的时间之后才可以允许交互，或者是实现类似发送验证码的按钮效果，具体做法是采用定时器</strong></p>
+<h2 id="使用GCD定时器"><a href="#使用GCD定时器" class="headerlink" title="使用GCD定时器"></a>使用GCD定时器</h2><h3 id="创建定时器对象"><a href="#创建定时器对象" class="headerlink" title="创建定时器对象"></a>创建定时器对象</h3><pre><code>__block NSInteger time = 30; // 需要强应用
+</code></pre><h3 id="创建队列"><a href="#创建队列" class="headerlink" title="创建队列"></a>创建队列</h3><pre><code>dispatch_queue_t queue = dispatch_get_global_queue(0, 0);
+</code></pre><h3 id="创建dispatch源-定时器"><a href="#创建dispatch源-定时器" class="headerlink" title="创建dispatch源(定时器)"></a>创建dispatch源(定时器)</h3><pre><code>(dispatach_source…timer..)
+</code></pre><ul>
+<li><p>01参数:要创建的source 是什么类型的， </p>
+<p>  <code>(DISPATCH_SOURCE_TYPE_TIMER)定时器</code></p>
+</li>
+<li><p>04参数:队列 —-线程 决定block 在哪个线程中调用</p>
+</li>
+</ul>
+<p>代码</p>
+<pre><code>dispatch_source_t _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+</code></pre><h3 id="设置定时器"><a href="#设置定时器" class="headerlink" title="设置定时器"></a>设置定时器</h3><ul>
+<li><p>01参数:定时器对象</p>
+</li>
+<li><p>02参数:开始时间 (DISPATCH_TIME_NOW) 什么时候开始执行第一次任务</p>
+</li>
+<li><p>03参数:间隔时间 GCD时间单位:纳秒</p>
+</li>
+<li><p>04参数:leewayInSeconds精准度:允许的误差: 0 表示绝对精准</p>
+</li>
+</ul>
+<p>code:</p>
+<pre><code>dispatch_source_set_timer(_timer, dispatch_walltime(NULL, 0), 1.0 * NSEC_PER_SEC, 0);
+</code></pre><h3 id="定时器每隔一段时间就要执行任务-block回调"><a href="#定时器每隔一段时间就要执行任务-block回调" class="headerlink" title="定时器每隔一段时间就要执行任务(block回调)"></a>定时器每隔一段时间就要执行任务(block回调)</h3><pre><code>dispatch_source_set_event_handler(_timer, ^{
+    if (time &lt;= 0) {
+        dispatch_source_cancel(_timer);
+        dispatch_async(dispatch_get_main_queue(), ^{
+
+            // 设置按钮的样式
+            [self.button setTitle:@&quot;重新获取验证码&quot; forState:UIControlStateNormal];
+            [self.button setTitleColor:[UIColor redColor] forState:UIControlStateNormal];
+            [self.button setUserInteractionEnabled:YES];
+        });
+    } else {
+
+        NSInteger seconds = time;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [self.button setTitle:[NSString stringWithFormat:@&quot;重新发送(%.2ld)&quot;, seconds] forState:UIControlStateNormal];
+            [self.button setTitleColor:[UIColor lightGrayColor] forState:UIControlStateNormal];
+            [self.button setUserInteractionEnabled:NO];
+        });
+        time--;
+    }
+});
+</code></pre><h3 id="启动定时器-默认是停止的"><a href="#启动定时器-默认是停止的" class="headerlink" title="启动定时器(默认是停止的)"></a>启动定时器(默认是停止的)</h3><pre><code>dispatch_resume(timer);
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/12/05/GCD实现按钮定时亮起/" data-id="cjl8z6ylu00065g81p1aq88pc" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/GCD/">GCD</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Quartz2D绘制曲线" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/04/Quartz2D绘制曲线/" class="article-date">
+  <time datetime="2016-12-04T15:53:04.000Z" itemprop="datePublished">2016-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/04/Quartz2D绘制曲线/">Quartz2D绘制曲线</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>使用函数绘制曲线</p>
+<p>Quartz 2D提供了CGContextAddCurveToPoint() 函数和CGContextAddQuadCurveToPoint()两个函数来向当前上下文添加曲线，前者用于添加贝塞尔曲线，后者用于添加二次曲线。<br>确定一条贝塞尔曲线需要4个点：开始点、第一个控制点、第二个控制点和结束点。</p>
+<p>确定一条二次曲线需要三个点：开始点、控制点和结束点。</p>
+<p>添加贝塞尔曲线</p>
+<pre><code>CGContextAddCurveToPoint()
+
+CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+// 添加曲线路径
+// 设置起点
+CGContextMoveToPoint(ctx, 0, 0);
+</code></pre><ul>
+<li>参数1: 上下文对象</li>
+<li>参数2: 控制点1X坐标</li>
+<li>参数3: 控制点1Y坐标</li>
+<li>参数4: 控制点2X坐标</li>
+<li>参数5: 控制点2Y坐标</li>
+<li>参数6: 终点x坐标</li>
+<li>参数7: 终点Y坐标</li>
+</ul>
+<p>code:</p>
+<pre><code>CGContextAddCurveToPoint(ctx, 30, 200, 300, 20, 300, 300);
+
+// 设置颜色
+[[UIColor magentaColor] setStroke];
+
+// 渲染
+CGContextStrokePath(ctx);
+
+// 关闭图形上下文
+CGContextClosePath(ctx);
+添加二次曲线
+CGContextAddQuadCurveToPoint()
+
+// 获取图形上下文
+CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+// 起始点
+CGContextMoveToPoint(ctx, 20, 10);
+</code></pre><ul>
+<li>参数: 图形上下文</li>
+<li>参数: 控制点坐标</li>
+<li>参数: 结束点坐标</li>
+</ul>
+<p>添加二次曲线</p>
+<pre><code>CGContextAddQuadCurveToPoint(ctx, 30, 200, 200, 40);
+
+[[UIColor cyanColor] setStroke];
+CGContextStrokePath(ctx);
+// 关闭图形上下文
+CGContextClosePath(ctx);
+</code></pre><p>绘制形状</p>
+<p>使用绘制二次曲线的函数绘制花瓣</p>
+<p>程序中CGContextAddFlower代码分别添加5瓣花朵路径、6瓣花朵路径、7瓣花朵路径，然后使用不同的颜色来填充这些路径。注意到上面的程序并未在每次添加花朵路径后立即关闭，这也是允许的，而且每次填充路径时并不会再次填充前一次已经填充过的路径。这是因为只用程序绘制了CGContextRef当前所包含的路径，系统会自动清除已经绘制的路径。</p>
+<p><strong>注意：每次绘制完成后，CGContextRef会自动清除已经绘制完成的路径</strong></p>
+<p> 该方法负责绘制花朵。<br> n：该参数控制花朵的花瓣数；dx、dy：控制花朵的位置；size：控制花朵的大小；<br> length：控制花瓣的长度</p>
+<pre><code>void CGContextAddFlower(CGContextRef c , NSInteger n
+                        , CGFloat dx , CGFloat dy , CGFloat size , CGFloat length)
+{
+    CGContextMoveToPoint(c , dx , dy + size);  // 移动到指定点
+    CGFloat dig = 2 * M_PI / n;
+    // 采用循环添加n段二次曲线路径
+    for(int i = 1; i &lt; n + 1 ; i++)
+    {
+        // 计算控制点坐标
+        CGFloat ctrlX = sin((i - 0.5) * dig) * length + dx;
+        CGFloat ctrlY= cos((i - 0.5 ) * dig) * length + dy;
+        // 计算结束点的坐标
+        CGFloat x = sin(i * dig) * size + dx;
+        CGFloat y =cos(i * dig) * size + dy;
+        // 添加二次曲线路径
+        CGContextAddQuadCurveToPoint(c, ctrlX , ctrlY , x , y);
+    }
+}
+</code></pre><p>绘制花瓣</p>
+<pre><code>- (void)drawStar
+{
+    CGContextRef ctx = UIGraphicsGetCurrentContext();  // 获取绘图的CGContextRef
+    CGContextBeginPath(ctx);  // 开始添加路径
+    CGContextAddFlower(ctx , 5 , 50 , 100 , 30 , 80);  // 添加5瓣花朵的路径
+    CGContextSetRGBFillColor(ctx, 1, 0, 0, 1);  // 设置填充颜色
+    CGContextFillPath(ctx);
+    CGContextAddFlower(ctx , 6 , 160 , 100 , 30 , 80);  // 添加6瓣花朵的路径
+    CGContextSetRGBFillColor(ctx, 1, 1, 0, 1);  // 设置填充颜色
+    CGContextFillPath(ctx);
+    CGContextAddFlower(ctx , 7 , 270 , 100 , 30 , 80);  // 添加7瓣花朵的路径
+    CGContextSetRGBFillColor(ctx, 1, 0, 1, 1);  // 设置填充颜色
+    CGContextFillPath(ctx);
+    CGContextClosePath(ctx);  // 关闭路径
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/12/04/Quartz2D绘制曲线/" data-id="cjl8z6ym5000i5g81tk1jctvp" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Quartz2D初识" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/12/04/Quartz2D初识/" class="article-date">
+  <time datetime="2016-12-04T05:34:28.000Z" itemprop="datePublished">2016-12-04</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/12/04/Quartz2D初识/">Quartz2D 初识</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p><strong>Quartz2D 二维绘图引擎，支持iOS和Mac系统么，可以实现的功能有</strong></p>
+<ul>
+<li>绘制图形: 线条，三角形，矩形，圆，弧等</li>
+<li>绘制文字</li>
+<li>绘制图像或者图片</li>
+<li>读取生成PDF</li>
+<li>截图/裁剪图片</li>
+<li>自定义UI控件</li>
+<li>手势解锁</li>
+<li>图形上下文</li>
+</ul>
+<h2 id="保存绘图信息和状态"><a href="#保存绘图信息和状态" class="headerlink" title="保存绘图信息和状态"></a>保存绘图信息和状态</h2><p>确定输出目标(PDF,Bitmap或者显示器)</p>
+<pre><code>Bitmap Graphics Context
+PDF Granhics Context
+Window Graphics Context
+Layer Graphics Context
+</code></pre><p>绘制线段</p>
+<pre><code>- (void)drawLine {
+    // 获取图形上下文
+    // 所用的是UIGraphics上下文
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+    // 创建描述路径
+    CGMutablePathRef path = CGPathCreateMutable();
+    // 设置起点
+    // path : 表示给那个路径设置起点
+    CGPathMoveToPoint(path, NULL, 10, 10);
+    CGPathAddLineToPoint(path, NULL, 80, 80);
+
+    // 添加路径到上下文
+    CGContextAddPath(ctx, path);
+
+    // 渲染
+    CGContextStrokePath(ctx);
+}
+</code></pre><p>系统底层自动将路径添加到图形上下文</p>
+<pre><code>- (void)drawLine2 {
+
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+    // 描述路径
+    // 此方法底层会自动将路径添加到图形上下文
+    CGContextMoveToPoint(ctx, 50, 50);
+    CGContextAddLineToPoint(ctx, 100, 100);
+
+    CGContextSetLineWidth(ctx, 5);
+
+    [[UIColor redColor] set];
+    // 渲染
+    CGContextStrokePath(ctx);
+}
+</code></pre><p>使用C语言函数的封装</p>
+<pre><code>- (void)drawLine3 {
+    // 使用UIKit 已经封装的功能,面向对象
+    // 贝塞尔路径
+
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(10, 10)];
+    [path addLineToPoint:CGPointMake(50, 50)];
+
+    // 绘制路径
+    [path stroke];
+}
+</code></pre><p>绘制多条线段</p>
+<ul>
+<li>绘制多条线,状态不好管理</li>
+<li>默认下一条线的起点是上一条线的终点</li>
+<li>绘制多天不连接的线时需要重新设置起点</li>
+<li>为了方便管理，应该让每一条线对应一条路径</li>
+<li>使用UIBeizerPath</li>
+</ul>
+<p>code:</p>
+<pre><code>- (void)drawMoreLine {
+    CGContextRef ctx = UIGraphicsGetCurrentContext();
+
+    // 描述路径
+    CGContextMoveToPoint(ctx, 20, 20);
+    CGContextAddLineToPoint(ctx, 100, 100);
+
+    // 设置第二条线的起点
+    CGContextMoveToPoint(ctx, 20, 30);
+    CGContextAddLineToPoint(ctx, 150, 100);
+
+    // 设置绘图状态要在渲染之前,都是给上下文设置
+    // 描边颜色
+    [[UIColor greenColor] setStroke];
+    // 线宽
+    CGContextSetLineWidth(ctx, 10);
+    // 连接样式
+    // kCGLineJoinMiter,    斜接
+    // kCGLineJoinRound,    圆角
+    // kCGLineJoinBevel     平切
+    CGContextSetLineJoin(ctx, kCGLineJoinBevel);
+    // 顶角样式,线的顶端效果
+    CGContextSetLineCap(ctx, kCGLineCapRound);
+
+    // 渲染
+    CGContextStrokePath(ctx);
+}
+</code></pre><p>使用UIBezierPath 绘制多条直线并设置不同状态</p>
+<pre><code>- (void)drawUIBezierPahtState {
+
+    // 第一条线
+    UIBezierPath *path = [UIBezierPath bezierPath];
+    [path moveToPoint:CGPointMake(10, 10)];
+    [path addLineToPoint:CGPointMake(80, 80)];
+
+    path.lineWidth = 20;
+    path.lineJoinStyle = kCGLineJoinRound;
+    path.lineCapStyle = kCGLineCapRound;
+    [[UIColor redColor] setStroke];
+
+    [path stroke];
+
+    // 第二条线
+    {
+        UIBezierPath *path = [UIBezierPath bezierPath];
+        [path moveToPoint:CGPointMake(40, 70)];
+        [path addLineToPoint:CGPointMake(150, 40)];
+
+        path.lineWidth = 20;
+        path.lineJoinStyle = kCGLineJoinRound;
+        path.lineCapStyle = kCGLineCapRound;
+        [[UIColor greenColor] setStroke];
+
+        [path stroke];
+    }
+}
+</code></pre>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/12/04/Quartz2D初识/" data-id="cjl8z6ym5000g5g81sa6arqfi" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Quartz2D/">Quartz2D</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Quartz2D绘制线条" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/22/Quartz2D绘制线条/" class="article-date">
+  <time datetime="2016-11-22T03:10:31.000Z" itemprop="datePublished">2016-11-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/22/Quartz2D绘制线条/">WKWebiView 使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="WKWebiView-iOS8-0-出现，性能要远远好于-iOS-2-0时出现的-UIWebView-主要记录WKWebView-的创建和代理方法"><a href="#WKWebiView-iOS8-0-出现，性能要远远好于-iOS-2-0时出现的-UIWebView-主要记录WKWebView-的创建和代理方法" class="headerlink" title="WKWebiView iOS8.0 出现，性能要远远好于 iOS 2.0时出现的 UIWebView,主要记录WKWebView 的创建和代理方法"></a>WKWebiView iOS8.0 出现，性能要远远好于 iOS 2.0时出现的 UIWebView,主要记录WKWebView 的创建和代理方法</h4><h2 id="创建WKWebView"><a href="#创建WKWebView" class="headerlink" title="创建WKWebView"></a>创建WKWebView</h2><pre><code>WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+self.webView = webView;
+[self.view addSubview:webView];
+webView.UIDelegate = self;
+webView.navigationDelegate = self;
+[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@&quot;https://www.baidu.com&quot;]]];
+</code></pre><p>遵守协议 WKNavgationDelegate WKUIDelegate</p>
+<h2 id="代理方法"><a href="#代理方法" class="headerlink" title="代理方法"></a>代理方法</h2><ul>
+<li><p>WKNavgationDelegate 方法</p>
+<ul>
+<li><p>发送请求之前决定是否跳转</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler &#123;</span><br><span class="line"></span><br><span class="line">	decisionHandler(WKNavigationActionPolicyAllow);</span><br><span class="line">	// 不允许跳转</span><br><span class="line">   decisionHandler(WKNavigationActionPolicyCancel);</span><br><span class="line">	NSLog(@&quot;decidePolicyForNavigationAction&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>收到相应之后决定是否跳转</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler &#123;</span><br><span class="line"></span><br><span class="line">	decisionHandler(WKNavigationResponsePolicyAllow);</span><br><span class="line">	</span><br><span class="line">	decisionHandler(WKNavigationResponsePolicyCancel);</span><br><span class="line">	</span><br><span class="line">	NSLog(@&quot;decidePolicyForNavigationResponse&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开始加载时调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;didStartProvisionalNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>接受到服务器的跳转请求时调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line">	NSLog(@&quot;didReceiveServerRedirectForProvisionalNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>- 页面加载失败时调用 **存在缓存问题**
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error &#123;</span><br><span class="line">		</span><br><span class="line">	NSLog(@&quot;error= %@&quot;, error);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+- 内容开始返回时调用
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didCommitNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didCommitNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>内容返回成功后调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didFinishNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开始返回错误时调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didFailNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>目前不知道什么时候调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler &#123;</span><br><span class="line">	NSLog(@&quot;didReceiveAuthenticationChallenge&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>目前不知道什么时候调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView API_AVAILABLE(macosx(10.11), ios(9.0)) &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;webViewWebContentProcessDidTerminate&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/11/22/Quartz2D绘制线条/" data-id="cjl8z6ym8000m5g81bfcuk7ik" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Swift3.0学习(四)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/22/Swift3.0学习(四)/" class="article-date">
+  <time datetime="2016-11-22T03:10:31.000Z" itemprop="datePublished">2016-11-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/22/Swift3.0学习(四)/">WKWebiView 使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="WKWebiView-iOS8-0-出现，性能要远远好于-iOS-2-0时出现的-UIWebView-主要记录WKWebView-的创建和代理方法"><a href="#WKWebiView-iOS8-0-出现，性能要远远好于-iOS-2-0时出现的-UIWebView-主要记录WKWebView-的创建和代理方法" class="headerlink" title="WKWebiView iOS8.0 出现，性能要远远好于 iOS 2.0时出现的 UIWebView,主要记录WKWebView 的创建和代理方法"></a>WKWebiView iOS8.0 出现，性能要远远好于 iOS 2.0时出现的 UIWebView,主要记录WKWebView 的创建和代理方法</h4><h2 id="创建WKWebView"><a href="#创建WKWebView" class="headerlink" title="创建WKWebView"></a>创建WKWebView</h2><pre><code>WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+self.webView = webView;
+[self.view addSubview:webView];
+webView.UIDelegate = self;
+webView.navigationDelegate = self;
+[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@&quot;https://www.baidu.com&quot;]]];
+</code></pre><p>遵守协议 WKNavgationDelegate WKUIDelegate</p>
+<h2 id="代理方法"><a href="#代理方法" class="headerlink" title="代理方法"></a>代理方法</h2><ul>
+<li><p>WKNavgationDelegate 方法</p>
+<ul>
+<li><p>发送请求之前决定是否跳转</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler &#123;</span><br><span class="line"></span><br><span class="line">	decisionHandler(WKNavigationActionPolicyAllow);</span><br><span class="line">	// 不允许跳转</span><br><span class="line">   decisionHandler(WKNavigationActionPolicyCancel);</span><br><span class="line">	NSLog(@&quot;decidePolicyForNavigationAction&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>收到相应之后决定是否跳转</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler &#123;</span><br><span class="line"></span><br><span class="line">	decisionHandler(WKNavigationResponsePolicyAllow);</span><br><span class="line">	</span><br><span class="line">	decisionHandler(WKNavigationResponsePolicyCancel);</span><br><span class="line">	</span><br><span class="line">	NSLog(@&quot;decidePolicyForNavigationResponse&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开始加载时调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;didStartProvisionalNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>接受到服务器的跳转请求时调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line">	NSLog(@&quot;didReceiveServerRedirectForProvisionalNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>- 页面加载失败时调用 **存在缓存问题**
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error &#123;</span><br><span class="line">		</span><br><span class="line">	NSLog(@&quot;error= %@&quot;, error);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+- 内容开始返回时调用
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didCommitNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didCommitNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>内容返回成功后调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didFinishNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开始返回错误时调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didFailNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>目前不知道什么时候调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler &#123;</span><br><span class="line">	NSLog(@&quot;didReceiveAuthenticationChallenge&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>目前不知道什么时候调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView API_AVAILABLE(macosx(10.11), ios(9.0)) &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;webViewWebContentProcessDidTerminate&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/11/22/Swift3.0学习(四)/" data-id="cjl8z6ymm00155g81lk0ce55i" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-WKWebiView使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/22/WKWebiView使用/" class="article-date">
+  <time datetime="2016-11-22T03:10:31.000Z" itemprop="datePublished">2016-11-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/22/WKWebiView使用/">WKWebiView 使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="WKWebiView-iOS8-0-出现，性能要远远好于-iOS-2-0时出现的-UIWebView-主要记录WKWebView-的创建和代理方法"><a href="#WKWebiView-iOS8-0-出现，性能要远远好于-iOS-2-0时出现的-UIWebView-主要记录WKWebView-的创建和代理方法" class="headerlink" title="WKWebiView iOS8.0 出现，性能要远远好于 iOS 2.0时出现的 UIWebView,主要记录WKWebView 的创建和代理方法"></a>WKWebiView iOS8.0 出现，性能要远远好于 iOS 2.0时出现的 UIWebView,主要记录WKWebView 的创建和代理方法</h4><h2 id="创建WKWebView"><a href="#创建WKWebView" class="headerlink" title="创建WKWebView"></a>创建WKWebView</h2><pre><code>WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+self.webView = webView;
+[self.view addSubview:webView];
+webView.UIDelegate = self;
+webView.navigationDelegate = self;
+[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@&quot;https://www.baidu.com&quot;]]];
+</code></pre><p>遵守协议 WKNavgationDelegate WKUIDelegate</p>
+<h2 id="代理方法"><a href="#代理方法" class="headerlink" title="代理方法"></a>代理方法</h2><ul>
+<li><p>WKNavgationDelegate 方法</p>
+<ul>
+<li><p>发送请求之前决定是否跳转</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler &#123;</span><br><span class="line"></span><br><span class="line">	decisionHandler(WKNavigationActionPolicyAllow);</span><br><span class="line">	// 不允许跳转</span><br><span class="line">   decisionHandler(WKNavigationActionPolicyCancel);</span><br><span class="line">	NSLog(@&quot;decidePolicyForNavigationAction&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>收到相应之后决定是否跳转</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler &#123;</span><br><span class="line"></span><br><span class="line">	decisionHandler(WKNavigationResponsePolicyAllow);</span><br><span class="line">	</span><br><span class="line">	decisionHandler(WKNavigationResponsePolicyCancel);</span><br><span class="line">	</span><br><span class="line">	NSLog(@&quot;decidePolicyForNavigationResponse&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开始加载时调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;didStartProvisionalNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>接受到服务器的跳转请求时调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line">	NSLog(@&quot;didReceiveServerRedirectForProvisionalNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>- 页面加载失败时调用 **存在缓存问题**
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error &#123;</span><br><span class="line">		</span><br><span class="line">	NSLog(@&quot;error= %@&quot;, error);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+- 内容开始返回时调用
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didCommitNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didCommitNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>内容返回成功后调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didFinishNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开始返回错误时调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didFailNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>目前不知道什么时候调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler &#123;</span><br><span class="line">	NSLog(@&quot;didReceiveAuthenticationChallenge&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>目前不知道什么时候调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView API_AVAILABLE(macosx(10.11), ios(9.0)) &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;webViewWebContentProcessDidTerminate&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/11/22/WKWebiView使用/" data-id="cjl8z6ymt001k5g810clnhj56" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Swift3.0学习(五)" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/22/Swift3.0学习(五)/" class="article-date">
+  <time datetime="2016-11-22T03:10:31.000Z" itemprop="datePublished">2016-11-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/22/Swift3.0学习(五)/">WKWebiView 使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h4 id="WKWebiView-iOS8-0-出现，性能要远远好于-iOS-2-0时出现的-UIWebView-主要记录WKWebView-的创建和代理方法"><a href="#WKWebiView-iOS8-0-出现，性能要远远好于-iOS-2-0时出现的-UIWebView-主要记录WKWebView-的创建和代理方法" class="headerlink" title="WKWebiView iOS8.0 出现，性能要远远好于 iOS 2.0时出现的 UIWebView,主要记录WKWebView 的创建和代理方法"></a>WKWebiView iOS8.0 出现，性能要远远好于 iOS 2.0时出现的 UIWebView,主要记录WKWebView 的创建和代理方法</h4><h2 id="创建WKWebView"><a href="#创建WKWebView" class="headerlink" title="创建WKWebView"></a>创建WKWebView</h2><pre><code>WKWebView *webView = [[WKWebView alloc] initWithFrame:self.view.bounds];
+self.webView = webView;
+[self.view addSubview:webView];
+webView.UIDelegate = self;
+webView.navigationDelegate = self;
+[webView loadRequest:[NSURLRequest requestWithURL:[NSURL URLWithString:@&quot;https://www.baidu.com&quot;]]];
+</code></pre><p>遵守协议 WKNavgationDelegate WKUIDelegate</p>
+<h2 id="代理方法"><a href="#代理方法" class="headerlink" title="代理方法"></a>代理方法</h2><ul>
+<li><p>WKNavgationDelegate 方法</p>
+<ul>
+<li><p>发送请求之前决定是否跳转</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView decidePolicyForNavigationAction:(WKNavigationAction *)navigationAction decisionHandler:(void (^)(WKNavigationActionPolicy))decisionHandler &#123;</span><br><span class="line"></span><br><span class="line">	decisionHandler(WKNavigationActionPolicyAllow);</span><br><span class="line">	// 不允许跳转</span><br><span class="line">   decisionHandler(WKNavigationActionPolicyCancel);</span><br><span class="line">	NSLog(@&quot;decidePolicyForNavigationAction&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>收到相应之后决定是否跳转</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView decidePolicyForNavigationResponse:(WKNavigationResponse *)navigationResponse decisionHandler:(void (^)(WKNavigationResponsePolicy))decisionHandler &#123;</span><br><span class="line"></span><br><span class="line">	decisionHandler(WKNavigationResponsePolicyAllow);</span><br><span class="line">	</span><br><span class="line">	decisionHandler(WKNavigationResponsePolicyCancel);</span><br><span class="line">	</span><br><span class="line">	NSLog(@&quot;decidePolicyForNavigationResponse&quot;);</span><br><span class="line"></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开始加载时调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didStartProvisionalNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">NSLog(@&quot;didStartProvisionalNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>接受到服务器的跳转请求时调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didReceiveServerRedirectForProvisionalNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line">	NSLog(@&quot;didReceiveServerRedirectForProvisionalNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>- 页面加载失败时调用 **存在缓存问题**
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFailProvisionalNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error &#123;</span><br><span class="line">		</span><br><span class="line">	NSLog(@&quot;error= %@&quot;, error);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+- 内容开始返回时调用
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didCommitNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didCommitNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>内容返回成功后调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didFinishNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>开始返回错误时调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;didFailNavigation&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>目前不知道什么时候调用</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (void)webView:(WKWebView *)webView didReceiveAuthenticationChallenge:(NSURLAuthenticationChallenge *)challenge completionHandler:(void (^)(NSURLSessionAuthChallengeDisposition disposition, NSURLCredential * _Nullable credential))completionHandler &#123;</span><br><span class="line">	NSLog(@&quot;didReceiveAuthenticationChallenge&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>目前不知道什么时候调用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">- (void)webViewWebContentProcessDidTerminate:(WKWebView *)webView API_AVAILABLE(macosx(10.11), ios(9.0)) &#123;</span><br><span class="line"></span><br><span class="line">	NSLog(@&quot;webViewWebContentProcessDidTerminate&quot;);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/11/22/Swift3.0学习(五)/" data-id="cjl8z6ymk00115g81c9y3zkk0" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/WKWebView/">WKWebView</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-OC RunTime学习" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/22/OC RunTime学习/" class="article-date">
+  <time datetime="2016-11-22T03:10:31.000Z" itemprop="datePublished">2016-11-22</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/22/OC RunTime学习/">OC中运行时</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>RunTime<br>对于C语言，函数的调用在编译的时候会决定调用哪个函数，而对于面向对象的语言对于[调用某个对象的方法或函数]就叫「消息传递」。所以在 Java，C++ 这些语言里[调用某个对象的方法或函数]和 Objective-C 里[向某个对象发送消息]在概念上就是一样的事情,</p>
+<h3 id="RunTime-简介"><a href="#RunTime-简介" class="headerlink" title="RunTime 简介"></a>RunTime 简介</h3><ul>
+<li>RunTime 简称运行时，OC中通常叫运行时机制，主要的是消息机制</li>
+<li>消息机制：在OC中，属于动态调用，在编译的时候并不能决定真正调用哪个函数，只有在真正运行的时候才会根据函数的名称找到对应的函数来调用</li>
+</ul>
+<h3 id="RunTime-作用"><a href="#RunTime-作用" class="headerlink" title="RunTime 作用"></a>RunTime 作用</h3><ul>
+<li>发送消息：让对象发送消息</li>
+<li>交换方法</li>
+<li>动态添加方法</li>
+<li>动态获取属性和方法</li>
+<li>字典转模型</li>
+<li>给分类添加属性</li>
+</ul>
+<p>原理：给分类添加一个属性,重写了setter、getter方法，但是没有生成 _成员变量，需要通过运行时关联到分类中， 其本质上就是给这个类添加关联,存值和取值<br>code</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">self.oldurlPath = urlPath;</span><br><span class="line"></span><br><span class="line">- (void)setOldurlPath:(NSString *)oldurlPath &#123;</span><br><span class="line"></span><br><span class="line">// RunTime 关联</span><br><span class="line">// 第一个参数：给哪个对象添加关联</span><br><span class="line">// 第二个参数：关联的key，通过这个key获取</span><br><span class="line">// 第三个参数：关联的value</span><br><span class="line">// 第四个参数:关联的策略</span><br><span class="line">objc_setAssociatedObject(self, key, oldurlPath, OBJC_ASSOCIATION_COPY_NONATOMIC);</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (NSString *)oldurlPath &#123;</span><br><span class="line">    return objc_getAssociatedObject(self, key);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/11/22/OC RunTime学习/" data-id="cjl8z6ym2000c5g81y89xu5fa" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/RunTime/">RunTime</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-git学习总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2016/11/20/git学习总结/" class="article-date">
+  <time datetime="2016-11-20T03:10:31.000Z" itemprop="datePublished">2016-11-20</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 itemprop="name">
+      <a class="article-title" href="/2016/11/20/git学习总结/">git 使用</a>
+    </h1>
+  
+
+      </header>
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="使用-git-提交代码"><a href="#使用-git-提交代码" class="headerlink" title="使用 git 提交代码"></a>使用 git 提交代码</h2><ul>
+<li><p>初始化工作目录</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git init</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>配置用户名和邮箱（当前仓库）</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config user.name &quot;aTreey&quot;</span><br><span class="line">git config user.email &quot;480814177@qq.com&quot;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p>配置全局的用户名和密码</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;aTreey&quot;</span><br><span class="line">git config --global user.email &quot;480814177@qq.com&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>创建文件</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">touch main.m</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>添加文件到暂缓区</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add main.m</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看文件状态</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git status</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>新添加的文件或者新修改的文件在工作区中，没有添加到暂缓区中</p>
+</li>
+</ul>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Untracked files: （红色）</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li>需要添加到暂缓区中</li>
+</ul>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git add main.m</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li>出现一下提示方可提交</li>
+</ul>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Changes to be committed: （绿色）</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>给git起别名</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config alias.st &quot;status&quot;</span><br><span class="line">git config alias.ci &quot;commit -m&quot;</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看所有版本库日志（只能查看当前版本的以前日志）</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看指定文件的版本库日志</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git log 文件名</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>查看所有的操作的日志</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reflog</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h2 id="版本会退"><a href="#版本会退" class="headerlink" title="版本会退"></a>版本会退</h2><ul>
+<li><p>强制回退到当前版本</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>强制回退到当前版本的上一个版本</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>强制回退到当前版本的上上个版本</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD^^</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>强制回退到当前版本的前100个版本</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD～100</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>强制回退指定版本</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">git reset --hard HEAD 版本号前七位</span><br></pre></td></tr></table></figure></li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2016/11/20/git学习总结/" data-id="cjl8z6ymr001g5g81gvnkxqkc" class="article-share-link">Teilen</a>
+      
+      
+  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/git/">git</a></li></ul>
+
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-TableView使用总结" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2016/11/05/TableView使用总结/" class="article-date">
@@ -153,359 +1041,10 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/11/05/TableView使用总结/" data-id="cjexl59z1001bi1x64rg0azl8" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/aTreey/2016/11/05/TableView使用总结/" data-id="cjl8z6ymq001f5g81wnmp4ga2" class="article-share-link">Teilen</a>
       
       
   <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/TableView/">TableView</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Hexo个人博客搭建" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/11/05/Hexo个人博客搭建/" class="article-date">
-  <time datetime="2016-11-05T14:15:50.000Z" itemprop="datePublished">2016-11-05</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/11/05/Hexo个人博客搭建/">Hexo个人博客搭建</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="安装Homebrew"><a href="#安装Homebrew" class="headerlink" title="安装Homebrew"></a>安装Homebrew</h2><ul>
-<li><p>参考官网教程  <a href="http://brew.sh/index_zh-cn.html" target="_blank" rel="noopener">http://brew.sh/index_zh-cn.html</a></p>
-</li>
-<li><p>在终端中输入,如果失败需要用sudo</p>
-</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/bin/ruby -e &quot; (curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)&quot;</span><br></pre></td></tr></table></figure>
-<h2 id="安装git"><a href="#安装git" class="headerlink" title="安装git"></a>安装git</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo brew install git</span><br></pre></td></tr></table></figure>
-<h2 id="安装node-js"><a href="#安装node-js" class="headerlink" title="安装node.js"></a>安装node.js</h2><ul>
-<li>[下载安装] (<a href="https://nodejs.org/en/download" target="_blank" rel="noopener">https://nodejs.org/en/download</a>) </li>
-</ul>
-<h2 id="安装hexo"><a href="#安装hexo" class="headerlink" title="安装hexo"></a>安装hexo</h2><ul>
-<li>需要输入密码： sudo 管理员权限 -g 全局安装</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sudo npm install -g hexo</span><br></pre></td></tr></table></figure>
-<h2 id="初始化-执行-hexo-init-命令"><a href="#初始化-执行-hexo-init-命令" class="headerlink" title="初始化 执行 hexo init 命令"></a>初始化 执行 hexo init 命令</h2><ul>
-<li>指定安装文件 blog</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo init blog</span><br></pre></td></tr></table></figure>
-<ul>
-<li>cd 到 文件夹 blog 下，安装 npm</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install</span><br></pre></td></tr></table></figure>
-<ul>
-<li>开启服务 </li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo s</span><br></pre></td></tr></table></figure>
-<ul>
-<li>复制终端中的 <a href="http://localhost:4000/" target="_blank" rel="noopener">http://localhost:4000/</a> 到浏览器中打开</li>
-</ul>
-<h2 id="关联-github"><a href="#关联-github" class="headerlink" title="关联 github"></a>关联 github</h2><ul>
-<li><p>添加 ssh key 到github</p>
-</li>
-<li><p>设置 Mac 显示隐藏文件</p>
-<ul>
-<li><p>在终端执行一下命令后，重启Finder</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">defaults write com.apple.finder AppleShowAllFiles -bool true</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>检查 SSH keys 是否存在 github</p>
-<ul>
-<li><p>打开 Finder 前往（command + shit + G）</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">~/.ssh/id_rsa.pub</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-<li><p>如果有文件说明存在 SSH key， 打开 id_rsa.pub 文件，复制里面的信息</p>
-</li>
-<li>进入 Github –&gt; Settings –&gt; SSH keys –&gt; add SSH key<br>任意添加一个title 粘贴内容到key 里，点击Add key 绿色按钮即可。</li>
-</ul>
-<h2 id="创建名字为-用户名-github-io-的仓库"><a href="#创建名字为-用户名-github-io-的仓库" class="headerlink" title="创建名字为 用户名.github.io 的仓库"></a>创建名字为 用户名.github.io 的仓库</h2><p>自行百度。。。。</p>
-<h2 id="配置-hexo"><a href="#配置-hexo" class="headerlink" title="配置 hexo"></a>配置 hexo</h2><ul>
-<li>vim 打开 _config.yml修改 deploy 模块</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">vim _config.yml</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">type: git</span><br><span class="line">repository: https://github.com/用户名/用户.github.io.git</span><br><span class="line">branch: master</span><br></pre></td></tr></table></figure>
-<p><strong>冒号后需要加空格</strong></p>
-<h2 id="生成-hexo-的静态页面"><a href="#生成-hexo-的静态页面" class="headerlink" title="生成 hexo 的静态页面"></a>生成 hexo 的静态页面</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo generate 后者 hexo g</span><br></pre></td></tr></table></figure>
-<ul>
-<li>报以下错</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ERROR Local hexo not found in ~/blog</span><br><span class="line">ERROR Try runing: &apos;npm install hexo --save&apos;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>执行下面代码</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo --save</span><br></pre></td></tr></table></figure>
-<h2 id="部署-hexo"><a href="#部署-hexo" class="headerlink" title="部署 hexo"></a>部署 hexo</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">hexo deploy 或者 hexo d</span><br></pre></td></tr></table></figure>
-<ul>
-<li>报以下错误</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ERROR Deployer not found: git</span><br></pre></td></tr></table></figure>
-<p><strong>解决方法：</strong></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">npm install hexo-deployer-git --save</span><br><span class="line">hexo d</span><br></pre></td></tr></table></figure>
-<ul>
-<li>配置 Deloyment 前，需要配置自己的身份信息</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">git config --global user.name &quot;yourname&quot;</span><br><span class="line">git config --global user.email &quot;youremail&quot;</span><br></pre></td></tr></table></figure>
-<p><strong>如果执行完以上命令还是不行，删除blog文件下的 .deploy_git 文件重新 hexo deploy</strong></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/11/05/Hexo个人博客搭建/" data-id="cjexl59y10005i1x6r570an5d" class="article-share-link">Teilen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Hexo/">Hexo</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-iOS弹框式图" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/27/iOS弹框式图/" class="article-date">
-  <time datetime="2016-10-26T16:58:20.000Z" itemprop="datePublished">2016-10-27</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/27/iOS弹框式图/">iOS 弹框视图</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p><strong><code>UIActionSheet</code> <code>UIAlertView</code> <code>UIAlertViewController</code> 的区别</strong></p>
-<h2 id="UIActionSheet"><a href="#UIActionSheet" class="headerlink" title="UIActionSheet"></a>UIActionSheet</h2><ul>
-<li>iOS 8.3 之后过期</li>
-<li>模态弹出，显示在试图的底部 类似菜单提供选择</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UIActionSheet *actionSheet = [[UIActionSheet alloc] initWithTitle:@&quot;title&quot; delegate:self cancelButtonTitle:@&quot;取消&quot; destructiveButtonTitle:nil otherButtonTitles:@&quot;按钮1&quot;, @&quot;按钮2&quot;, nil];</span><br><span class="line">[actionSheet showInView:self.view];</span><br></pre></td></tr></table></figure>
-<h2 id="UIAlertView"><a href="#UIAlertView" class="headerlink" title="UIAlertView"></a>UIAlertView</h2><ul>
-<li>iOS 9.0 之后过期</li>
-<li>模态弹出，显示在试图的中间位置 类似一个对话框提供选择</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">UIAlertView *alertView = [[UIAlertView alloc] initWithTitle:@&quot;考勤方式&quot; message:nil delegate:self cancelButtonTitle:@&quot;取消&quot; otherButtonTitles:faceBtn, fingerPrintBtn, nil];</span><br><span class="line">[alertView show];</span><br></pre></td></tr></table></figure>
-<h2 id="UIAlertViewController"><a href="#UIAlertViewController" class="headerlink" title="UIAlertViewController"></a>UIAlertViewController</h2><ul>
-<li>iOS 8.0 起可以使用</li>
-<li><code>style</code> : 默认样式, 类似 <code>UIActionSheet</code> 列表形式 </li>
-<li><code>style</code> 为：<code>UIAlertControllerStyleAlert</code> 对话框形式</li>
-<li>设置按钮的样式</li>
-</ul>
-<p>如果修改 UIAlertAction 中stye 为：</p>
-<p>UIAlertActionStyleCancel<br>取消按钮会和其他按钮分开</p>
-<p>如果修改 UIAlertAction 中stye 为：</p>
-<p>UIAlertActionStyleDestructive<br>取消按钮会以红色警告的方式显示， 但是按钮之间不会分开</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">UIAlertController *alert = [UIAlertController alertControllerWithTitle:@&quot;考勤方式&quot; message:nil preferredStyle:UIAlertControllerStyleActionSheet];</span><br><span class="line">UIAlertAction *faceBtn = [UIAlertAction actionWithTitle:@&quot;人脸识别&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) &#123;	&#125;];</span><br><span class="line"></span><br><span class="line">UIAlertAction *fingerPrintBtn = [UIAlertAction actionWithTitle:@&quot;指纹认证&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) &#123;</span><br><span class="line"></span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">UIAlertAction *cancelBtn = [UIAlertAction actionWithTitle:@&quot;取消&quot; style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) &#123;</span><br><span class="line"></span><br><span class="line">&#125;];</span><br><span class="line"></span><br><span class="line">[alert addAction:faceBtn];</span><br><span class="line">[alert addAction:fingerPrintBtn];</span><br><span class="line">[alert addAction:cancelBtn];</span><br><span class="line">[self presentViewController:alert animated:YES completion:nil];</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/10/27/iOS弹框式图/" data-id="cjexl59z8001mi1x6he4fnl0d" class="article-share-link">Teilen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AlertView/">AlertView</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-本地缓存" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/20/本地缓存/" class="article-date">
-  <time datetime="2016-10-19T17:20:41.000Z" itemprop="datePublished">2016-10-20</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/20/本地缓存/">本地缓存</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="保存图片到沙盒"><a href="#保存图片到沙盒" class="headerlink" title="保存图片到沙盒"></a>保存图片到沙盒</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">- (void)saveImage:(UIImage *)image InSanBoxWithIndexPath:(NSInteger)indexPath &#123;</span><br><span class="line"></span><br><span class="line">	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);</span><br><span class="line">	NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@&quot;pic_%ld.png&quot;, indexPath]];   // 保存文件的名称</span><br><span class="line">	[UIImagePNGRepresentation(image)writeToFile:filePath atomically:YES];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="获取沙盒中的图片"><a href="#获取沙盒中的图片" class="headerlink" title="获取沙盒中的图片"></a>获取沙盒中的图片</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">- (UIImage *)fetchImageFromSanBoxWithIndexPath:(NSInteger)indexPath</span><br><span class="line">&#123;</span><br><span class="line">	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);</span><br><span class="line">	NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@&quot;pic_%ld.png&quot;, indexPath]];   // 保存文件的名称</span><br><span class="line">	UIImage *img = [UIImage imageWithContentsOfFile:filePath];</span><br><span class="line">	return img;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="删除沙盒中的图片"><a href="#删除沙盒中的图片" class="headerlink" title="删除沙盒中的图片"></a>删除沙盒中的图片</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">- (BOOL)deleteImageAtIndexPath:(NSInteger)index;</span><br><span class="line">&#123;</span><br><span class="line"></span><br><span class="line">	NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory,NSUserDomainMask, YES);</span><br><span class="line">	NSString *filePath = [[paths objectAtIndex:0] stringByAppendingPathComponent:[NSString stringWithFormat:@&quot;pic_%ld.png&quot;, index]];</span><br><span class="line"></span><br><span class="line">	if([[NSFileManager defaultManager] fileExistsAtPath:filePath]) &#123;</span><br><span class="line">		return  [[NSFileManager defaultManager] removeItemAtPath:filePath error:nil];</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	return NO;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h2 id="修改图片"><a href="#修改图片" class="headerlink" title="修改图片"></a>修改图片</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br></pre></td><td class="code"><pre><span class="line">- (UIImage *)fixOrientation:(UIImage *)aImage &#123;</span><br><span class="line"></span><br><span class="line">	// No-op if the orientation is already correct</span><br><span class="line">	if (aImage.imageOrientation == UIImageOrientationUp)</span><br><span class="line">		return aImage;</span><br><span class="line">	</span><br><span class="line">	// We need to calculate the proper transformation to make the image upright.</span><br><span class="line">	// We do it in 2 steps: Rotate if Left/Right/Down, and then flip if Mirrored.</span><br><span class="line">	CGAffineTransform transform = CGAffineTransformIdentity;</span><br><span class="line">	</span><br><span class="line">	switch (aImage.imageOrientation) &#123;</span><br><span class="line">		case UIImageOrientationDown:</span><br><span class="line">		case UIImageOrientationDownMirrored:</span><br><span class="line">		transform = CGAffineTransformTranslate(transform, aImage.size.width, aImage.size.height);</span><br><span class="line">		transform = CGAffineTransformRotate(transform, M_PI);</span><br><span class="line">		break;</span><br><span class="line">		</span><br><span class="line">		case UIImageOrientationLeft:</span><br><span class="line">		case UIImageOrientationLeftMirrored:</span><br><span class="line">		transform = CGAffineTransformTranslate(transform, aImage.size.width, 0);</span><br><span class="line">		transform = CGAffineTransformRotate(transform, M_PI_2);</span><br><span class="line">		break;</span><br><span class="line">		</span><br><span class="line">		case UIImageOrientationRight:</span><br><span class="line">		case UIImageOrientationRightMirrored:</span><br><span class="line">		transform = CGAffineTransformTranslate(transform, 0, aImage.size.height);</span><br><span class="line">		transform = CGAffineTransformRotate(transform, -M_PI_2);</span><br><span class="line">		break;</span><br><span class="line">		default:</span><br><span class="line">		break;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	switch (aImage.imageOrientation) &#123;</span><br><span class="line">		case UIImageOrientationUpMirrored:</span><br><span class="line">		case UIImageOrientationDownMirrored:</span><br><span class="line">		transform = CGAffineTransformTranslate(transform, aImage.size.width, 0);</span><br><span class="line">		transform = CGAffineTransformScale(transform, -1, 1);</span><br><span class="line">		break;</span><br><span class="line">		</span><br><span class="line">		case UIImageOrientationLeftMirrored:</span><br><span class="line">		case UIImageOrientationRightMirrored:</span><br><span class="line">		transform = CGAffineTransformTranslate(transform, aImage.size.height, 0);</span><br><span class="line">		transform = CGAffineTransformScale(transform, -1, 1);</span><br><span class="line">		break;</span><br><span class="line">		default:</span><br><span class="line">		break;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	// Now we draw the underlying CGImage into a new context, applying the transform</span><br><span class="line">	// calculated above.</span><br><span class="line">	CGContextRef ctx = CGBitmapContextCreate(NULL, aImage.size.width, aImage.size.height,</span><br><span class="line">	CGImageGetBitsPerComponent(aImage.CGImage), 0,</span><br><span class="line">	CGImageGetColorSpace(aImage.CGImage),</span><br><span class="line">	CGImageGetBitmapInfo(aImage.CGImage));</span><br><span class="line">	CGContextConcatCTM(ctx, transform);</span><br><span class="line">	switch (aImage.imageOrientation) &#123;</span><br><span class="line">		case UIImageOrientationLeft:</span><br><span class="line">		case UIImageOrientationLeftMirrored:</span><br><span class="line">		case UIImageOrientationRight:</span><br><span class="line">		case UIImageOrientationRightMirrored:</span><br><span class="line">		// Grr...</span><br><span class="line">			CGContextDrawImage(ctx, CGRectMake(0,0,aImage.size.height,aImage.size.width), aImage.CGImage);</span><br><span class="line">		break;</span><br><span class="line">		</span><br><span class="line">		default:</span><br><span class="line">			CGContextDrawImage(ctx, CGRectMake(0,0,aImage.size.width,aImage.size.height), aImage.CGImage);</span><br><span class="line">		break;</span><br><span class="line">	&#125;</span><br><span class="line">	CGImageRef cgimg = CGBitmapContextCreateImage(ctx);</span><br><span class="line">	UIImage *img = [UIImage imageWithCGImage:cgimg];</span><br><span class="line">	CGContextRelease(ctx);</span><br><span class="line">	CGImageRelease(cgimg);</span><br><span class="line">	return img;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/10/20/本地缓存/" data-id="cjexl59zh0020i1x6kyki7lfb" class="article-share-link">Teilen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/本地缓存/">本地缓存</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-SQlite使用学习" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2016/10/13/SQlite使用学习/" class="article-date">
-  <time datetime="2016-10-13T14:30:54.000Z" itemprop="datePublished">2016-10-13</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2016/10/13/SQlite使用学习/">SQL 使用</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="常用SQL-语句"><a href="#常用SQL-语句" class="headerlink" title="常用SQL 语句"></a>常用SQL 语句</h2><p>创建一张表</p>
-<pre><code>create table if not exists t_product(productId integer, productName text, productPrice real);
-</code></pre><p>删除一张表</p>
-<pre><code>drop table if exists t_product;
-</code></pre><p>插入一条记录</p>
-<p>如果不写某个字段和对应值就会为NUll</p>
-<pre><code>insert into t_product(productId, productName, productPrice) values (0001, &apos;iPhone7&apos;, 6100.8);
-</code></pre><p>修改记录</p>
-<pre><code>update t_product set productId = 20002 where productName = &apos;iPhone5s&apos;;
-</code></pre><p>删除</p>
-<pre><code>delete from t_product where productName = &apos;iphone5s&apos;;
-</code></pre><p><strong>注意：条件语句不能单独存在，只能在修改／删除／查询之后</strong></p>
-<h2 id="简单查询"><a href="#简单查询" class="headerlink" title="简单查询"></a>简单查询</h2><p>准备数据生成sql语句文件</p>
-<pre><code>NSMutableString *mutableString = [NSMutableString string];
-int productIdValue = arc4random_uniform(1000);
-NSString *productNameValue = [NSString stringWithFormat:@&quot;iPhone_%d&quot;,1 + arc4random_uniform(8)];
-CGFloat productPriceValue = 3000 + arc4random_uniform(1000);
-
-for (NSInteger i = 0; i &lt; 1000; i++) {
-    [mutableString appendFormat:@&quot;insert into t_product(productId, productName, productPrice) values (%d, %@, %f); \r\n&quot;, productIdValue, productNameValue, productPriceValue];
-}
-
-// 写入文件
-[mutableString writeToFile:@&quot;/Users/Apeng/work/Demo/Sqlite/products.sql&quot; atomically:YES encoding:NSUTF8StringEncoding error:NULL];
-</code></pre><p>生成的sql语句文件</p>
-<p><img src="http://i1.piimg.com/567571/588e899a67c1cce6.png" alt=""></p>
-<p>SQL 查询语句</p>
-<pre><code>select *（表示字段）from t_product（表名）where(条件语句) productId &gt; 100 (字段满足的条件) ;
-
-select * from t_product where productPrice &lt; 5000; 
-</code></pre><p><img src="http://p1.bpimg.com/567571/54d2c6ade469b653.png" alt=""><br>or: 或</p>
-<p><img src="http://p1.bqimg.com/567571/c8cd40b4271ec880.png" alt=""></p>
-<p>and: 且</p>
-<p><img src="http://i1.piimg.com/567571/a6b404e93f8bc0eb.png" alt=""></p>
-<p>分页查询</p>
-<p>limit 0,5 （ limit 索引，每页取得数据条数 ）</p>
-<p>第一页 limit 0,5;</p>
-<p>第二页 limit 5,5;</p>
-<p>第三页 limit 10,5;</p>
-<p>第四页 limit 15,5;</p>
-<p>第N页 limit （N - 1）* 5</p>
-<pre><code>select * from t_product where productName = &apos;iPhone_8&apos; and productPrice &lt; 3300 order by productPrice limit 5,5;
-</code></pre><p><img src="http://i1.piimg.com/567571/29e2799f64db4884.png" alt=""></p>
-<p>排序查询</p>
-<p>order by 默认是从小到大，一般是在某一个结果之后</p>
-<p>默认升序</p>
-<pre><code>// 默认升序
-select * from t_product where productName = &apos;iPhone_8&apos; and productPrice &lt; 3300 order by productPrice;
-
-// 降序
-select * from t_product where productName = &apos;iPhone_8&apos; and productPrice &lt; 3300 order by productPrice desc;
-</code></pre><p><img src="http://p1.bqimg.com/567571/c69e4c2790b900b6.png" alt=""></p>
-<p>模糊查询</p>
-<p>关键字搜索 ，% 是指通配符</p>
-<p>SQL 顺序</p>
-<pre><code>select * from 表名 条件语句（模糊匹配）排序语句 分页语句
-
-select * from t_product where productName like &apos;%_4&apos; order by productPrice limit 0,5;
-</code></pre><p><img src="http://i1.piimg.com/567571/4727877c1b85cb0e.png" alt=""></p>
-<p>主键</p>
-<p>数据库的约定俗称,自增长,建议创建表时增加主键，也可以之后再设计表</p>
-<pre><code>CREATE TABLE IF NOT EXISTS t_class (id integer PRIMARY KEY, className text, classNO integer); 
-</code></pre><p>外键约束</p>
-<p>当两张表有关联时，需要使用外键约束，一张表中的字段名所对应的值只能来自于另一张表中</p>
-<p><img src="http://p1.bqimg.com/567571/6b8c31aca88003d0.png" alt=""></p>
-<p>添加外键约束之后的变化</p>
-<p><img src="http://p1.bpimg.com/567571/4e0c9af7ec980748.png" alt=""></p>
-<p>多表查询</p>
-<p>有 <code>t_department</code>（部门表）和 <code>t_employee</code>(员工表)两张表</p>
-<p>需求：在 <code>t_employee</code> 表中查出部门研发部的人员</p>
-<p>1 嵌套查询：</p>
-<p>先查根据部门名称查出部ID，</p>
-<p><img src="http://p1.bqimg.com/567571/29459ada951407a8.png" alt=""></p>
-<p>然后再用部门ID查出员工表中的员工<br><img src="http://i1.piimg.com/567571/0636fdca9e552d99.png" alt=""></p>
-<p>以上两步的代码可合并</p>
-<p>根据部门名称查出部门ID</p>
-<pre><code>SELECT id from t_department WHERE departmentName = &apos;研发部&apos;;
-</code></pre><p>根据部门id查出这个部门的人员</p>
-<pre><code>SELECT * from t_employee WHERE departmentID = 1;
-</code></pre><p>合并后为</p>
-<pre><code>select * from t_employee where departmentID = (SELECT id from t_department WHERE departmentName = &apos;研发部&apos;); 
-</code></pre><p>结果为：</p>
-<p><img src="http://i1.piimg.com/567571/fd184b9d631bb19f.png" alt=""></p>
-<ol>
-<li>链接查询</li>
-</ol>
-<p>给表起别名，给字段起别名</p>
-<pre><code>select employee.*, depart.departmentName deptN from t_department depart, t_employee employee;
-</code></pre><p>/*<em>多表查询之链接查询</em>/</p>
-<pre><code>select t_employee.*, t_department.departmentName FROM t_department, t_employee;
-</code></pre><p><img src="http://i1.piimg.com/567571/d5bd63824decf7f6.png" alt=""></p>
-<p>消除笛卡尔积</p>
-<pre><code>select employee.*, depart.departmentName deptN from t_department depart, t_employee employee where employee.departmentID = depart.id and employee.departmentID = 1;
-</code></pre><p><img src="http://i1.piimg.com/567571/b326df9d3150885d.png" alt=""></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2016/10/13/SQlite使用学习/" data-id="cjexl59yc000ni1x6wzb7cnm4" class="article-share-link">Teilen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/SQL/">SQL</a></li></ul>
 
     </footer>
   </div>
@@ -518,7 +1057,7 @@ select * from t_product where productName like &apos;%_4&apos; order by productP
 
   <nav id="page-nav">
     
-    <a class="extend prev" rel="prev" href="/page/3/">&laquo; zurück</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span>
+    <a class="extend prev" rel="prev" href="/page/3/">&laquo; zurück</a><a class="page-number" href="/">1</a><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><span class="page-number current">4</span><a class="page-number" href="/page/5/">5</a><a class="extend next" rel="next" href="/page/5/">weiter &raquo;</a>
   </nav>
 
 </section>
@@ -551,7 +1090,7 @@ select * from t_product where productName like &apos;%_4&apos; order by productP
   <div class="widget-wrap">
     <h3 class="widget-title">Archiv</h3>
     <div class="widget">
-      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/08/">August 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/07/">July 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/06/">June 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/03/">March 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/02/">February 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2018/01/">January 2018</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/12/">December 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/11/">November 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/04/">April 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/03/">March 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/02/">February 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2017/01/">January 2017</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/12/">December 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/11/">November 2016</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2016/10/">October 2016</a></li></ul>
     </div>
   </div>
 
@@ -564,23 +1103,23 @@ select * from t_product where productName like &apos;%_4&apos; order by productP
       <ul>
         
           <li>
-            <a href="/2018/03/17/hello-world/">Hello World</a>
+            <a href="/2018/08/22/iOS通过URL获取HTML中标题/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2018/02/03/Mac安装VirtualBox连接U盘/">Mac安装VirtualBox连接U盘</a>
+            <a href="/2018/08/17/GCD 信号量/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2018/01/19/Block学习探究/">Block学习探究</a>
+            <a href="/2018/07/26/ReactNative中ref使用/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2018/01/18/常见问题总结-二/">面试中常见问题总结(二)</a>
+            <a href="/2018/07/26/ES6语法/">(no title)</a>
           </li>
         
           <li>
-            <a href="/2018/01/17/面试中常见问题总结/">面试中常见问题总结</a>
+            <a href="/2018/07/19/Swift 协议使用/">(no title)</a>
           </li>
         
       </ul>
