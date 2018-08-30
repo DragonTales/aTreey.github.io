@@ -61,6 +61,377 @@
       <div class="outer">
         <section id="main">
   
+    <article id="post-iOS 动态设置TableHeaderView高度" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/07/17/iOS 动态设置TableHeaderView高度/" class="article-date">
+  <time datetime="2018-07-17T11:12:57.034Z" itemprop="datePublished">2018-07-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="iOS动态设置tableHeaderView高度"><a href="#iOS动态设置tableHeaderView高度" class="headerlink" title="iOS动态设置tableHeaderView高度"></a>iOS动态设置<code>tableHeaderView</code>高度</h2><h4 id="需求"><a href="#需求" class="headerlink" title="需求"></a>需求</h4><p>动态的设置<code>tableHeaderView</code>的高度</p>
+<h4 id="遇到的问题："><a href="#遇到的问题：" class="headerlink" title="遇到的问题："></a>遇到的问题：</h4><ul>
+<li>设置<code>tableHeaderView</code> 的<code>frame</code>无法实现，有时候会出现<code>tableView</code> 中间的 <code>cell</code> 不显示</li>
+<li><p>有时候会导致<code>headerView</code>和<code>cell</code>内容重叠</p>
+</li>
+<li><p>通过计算控件高度设置frame方式麻烦</p>
+</li>
+</ul>
+<h4 id="正确的步骤"><a href="#正确的步骤" class="headerlink" title="正确的步骤"></a>正确的步骤</h4><ul>
+<li>创建HeaderView</li>
+<li>取出<code>UITableView</code>的<code>tableHeaderView</code></li>
+<li>设置<code>frame</code>大小，调整headerView布局</li>
+<li>重新给<code>UITableView</code>的<code>tableHeaderView</code></li>
+</ul>
+<h4 id="使用AutoLayout"><a href="#使用AutoLayout" class="headerlink" title="使用AutoLayout"></a>使用AutoLayout</h4><p>给<code>UITableView</code>增加分类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">extension UITableView &#123;</span><br><span class="line">    /// set tableHeaderView</span><br><span class="line">    func setTableHeaderView(_ headerView: UIView) &#123;</span><br><span class="line">        headerView.translatesAutoresizingMaskIntoConstraints = false</span><br><span class="line">        self.tableHeaderView = headerView</span><br><span class="line">        // autolayout</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .centerX, relatedBy: .equal, toItem: self, attribute: .centerX, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .top, relatedBy: .equal, toItem: self, attribute: .top, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">        NSLayoutConstraint(item: headerView, attribute: .width, relatedBy: .equal, toItem: self, attribute: .width, multiplier: 1.0, constant: 0).isActive = true</span><br><span class="line">    &#125;</span><br><span class="line">    /// update</span><br><span class="line">    func updateHeaderView() &#123;</span><br><span class="line">        guard let headerView = self.tableHeaderView else &#123; return &#125;</span><br><span class="line">        headerView.layoutIfNeeded()</span><br><span class="line">        let header = self.tableHeaderView</span><br><span class="line">        self.tableHeaderView = header</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2018/07/17/iOS 动态设置TableHeaderView高度/" data-id="cjlgmf6o00021bbfwmmlodm6y" class="article-share-link">Teilen</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Masonry:Snapkit使用总结" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/28/Masonry:Snapkit使用总结/" class="article-date">
+  <time datetime="2018-06-28T09:39:38.784Z" itemprop="datePublished">2018-06-28</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <h2 id="Masonry使用"><a href="#Masonry使用" class="headerlink" title="Masonry使用"></a>Masonry使用</h2><p>基本使用官网Demo非常详细，以下总结的是常见问题和技巧</p>
+<h3 id="安装遇到的问题"><a href="#安装遇到的问题" class="headerlink" title="安装遇到的问题"></a>安装遇到的问题</h3><ul>
+<li><p>pod 安装后出现⚠️，项目运行报错</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[UIView mas_makeConstraints:]: unrecognized selector sent to instance</span><br></pre></td></tr></table></figure>
+<p>  <a href="https://github.com/SnapKit/Masonry/issues/188">github</a></p>
+<p>  <a href="https://www.jianshu.com/p/3c3fc3cf1218" target="_blank" rel="noopener">解决方法</a></p>
+</li>
+<li><p>使用<code>lastBaseline</code>属性<code>crash</code></p>
+<p>  <a href="https://github.com/SnapKit/Masonry/issues/353">解决办法</a></p>
+</li>
+</ul>
+<h3 id="使用时注意点"><a href="#使用时注意点" class="headerlink" title="使用时注意点"></a>使用时注意点</h3><ul>
+<li><p><code>edgesForExtendedLayout</code> 方法</p>
+<p>  重写此方法的目的是为了确定布局位置从什么位置开始什么位置结束，</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">- (UIRectEdge)edgesForExtendedLayout &#123;</span><br><span class="line">   return UIRectEdgeNone;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<pre><code>**重写后**
+![](https://ws1.sinaimg.cn/large/006tNc79ly1fsgcn3fmo0j30s61iyalk.jpg)
+
+**重写前**
+![](https://ws4.sinaimg.cn/large/006tNc79ly1fsgcokvpdwj30s61iy7eq.jpg)
+</code></pre><ul>
+<li><p><code>translucent</code> 设置<code>UINavigationBar</code>是否半透明, 如果设置了导航栏的<code>style</code> 为<code>UIBarStyleBlackTranslucent</code> 就为true</p>
+<p>  <strong>设置为false不透明效果</strong><br>  <img src="https://ws4.sinaimg.cn/large/006tNc79ly1fsgg7ugz8mj30ow0nqq4h.jpg" alt=""></p>
+</li>
+</ul>
+<ul>
+<li><p><code>extendedLayoutIncludesOpaqueBars</code> 导航栏不透明条件下是否可以扩展，默认是NO不可以扩展</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">self.navigationController?.navigationBar.isTranslucent = false</span><br><span class="line"> self.extendedLayoutIncludesOpaqueBars = true</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<pre><code>**设置不透明，设置可以扩展此时从坐标的（0，0）点开始布局**
+![](https://ws2.sinaimg.cn/large/006tNc79ly1fsggem13mjj30ow0j83zy.jpg)    
+</code></pre><ul>
+<li><p><code>inset</code> 的使用，当约束控件的属性相同时不用再考虑正负值的问题，例如要约束一个控件左边距离另一控件的右边位置时还需要使用负值情况</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[yellowdView makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">       make.height.equalTo(@150);</span><br><span class="line">       make.top.equalTo(self).inset(220);</span><br><span class="line">       make.leading.equalTo(self).inset(10);</span><br><span class="line">       make.trailing.equalTo(greenView.leading).inset(10);</span><br><span class="line">       make.width.equalTo(greenView);</span><br><span class="line">   &#125;];</span><br></pre></td></tr></table></figure>
+</li>
+<li><p><code>edges</code>的使用，约束边距更方便</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[edgeView remakeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">           make.edges.equalTo(lasView).insets(UIEdgeInsetsMake(10, 5, 5, 5));</span><br><span class="line">       &#125;];</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<ul>
+<li><p><code>Priority</code> 设置约束的优先级</p>
+<ul>
+<li><code>priorityHigh</code></li>
+<li><code>priorityMedium</code></li>
+<li><code>priorityLow</code></li>
+</ul>
+</li>
+<li><p><code>makeConstraints</code>、<code>updateConstraints</code>、<code>remakeConstraints</code>三者区别</p>
+<ul>
+<li><code>makeConstraints</code> 添加约束</li>
+<li><code>updateConstraints</code> 更新约束，更新之前会查找一边控件已经存在的约束，没有就添加，有就更新到最新的约束</li>
+<li><code>remakeConstraints</code>删除控件以前的所有约束重新添加约束</li>
+</ul>
+</li>
+<li><p>设置控件或者某一约束的’key’ 方便冲突时⚠️查找</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">	greenView.mas_key = @&quot;greenView&quot;;</span><br><span class="line">    [greenView makeConstraints:^(MASConstraintMaker *make) &#123;</span><br><span class="line">        make.height.equalTo(yellowdView).key(@&quot;greenView-height&quot;);</span><br><span class="line">        make.top.equalTo(yellowdView).key(@&quot;greenView-top&quot;);</span><br><span class="line">        make.width.equalTo(yellowdView).key(@&quot;greenView-width&quot;);</span><br><span class="line">        make.trailing.equalTo(self).inset(10).key(@&quot;greenView-trailing&quot;);</span><br><span class="line">        // 冲突约束</span><br><span class="line">//        make.leading.equalTo(greenView.trailing).inset(10).key(@&quot;greenView-leading&quot;);</span><br><span class="line">    &#125;];</span><br><span class="line">	```	</span><br><span class="line"></span><br><span class="line">- 使用 `MASAttachKeys`批量给`view`设置key</span><br></pre></td></tr></table></figure>
+<p>  MASAttachKeys(greenView, yellowdView);</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">	![](https://ws3.sinaimg.cn/large/006tNc79ly1fsgalvd4l6j31a20modnp.jpg)</span><br><span class="line">	</span><br><span class="line">- `dividedBy`和 `multipliedBy` 约束宽高比</span><br></pre></td></tr></table></figure>
+<p>  [topInnerView makeConstraints:^(MASConstraintMaker *make) {</p>
+<pre><code>// 设置自己的宽高比是3:1
+make.width.equalTo( topInnerView.height).multipliedBy(3); // 乘因数
+
+// 设置宽高并且设置他们的优先级最低
+make.width.height.lessThanOrEqualTo(topView);
+make.width.height.equalTo(topView).priorityLow();
+
+// 设置位置
+make.top.equalTo(topView);
+</code></pre><p>  }];</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 多个控件批量约束</span><br></pre></td></tr></table></figure>
+<p>  NSValue <em>sizeValue = [NSValue valueWithCGSize:CGSizeMake(100, 100)];<br>  [@[blueView, redView, yellowView] makeConstraints:^(MASConstraintMaker </em>make) {</p>
+<pre><code>make.size.equalTo(sizeValue);
+</code></pre><p>  }];</p>
+<p>  [@[blueView, redView, yellowView] mas_makeConstraints:^(MASConstraintMaker *make) {</p>
+<pre><code>make.top.equalTo(self).inset(20);
+</code></pre><p>  }];</p>
+<p>  [blueView makeConstraints:^(MASConstraintMaker *make) {</p>
+<pre><code>make.left.equalTo(self).inset(20);
+</code></pre><p>  }];</p>
+<p>  [redView makeConstraints:^(MASConstraintMaker *make) {</p>
+<pre><code>make.left.equalTo(blueView.right).inset(10);
+</code></pre><p>  }];</p>
+<p>  [yellowView makeConstraints:^(MASConstraintMaker *make) {</p>
+<pre><code>make.left.equalTo(redView.right).inset(10);
+</code></pre><p>  }];</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">![批量约束](https://ws1.sinaimg.cn/large/006tNc79ly1fsgaz670hvj30s61iyn2l.jpg)</span><br><span class="line"></span><br><span class="line">**以上代码也可以简化为**</span><br></pre></td></tr></table></figure>
+<p>  [redView makeConstraints:^(MASConstraintMaker *make) {</p>
+<pre><code>make.left.equalTo(blueView.right).inset(10);
+</code></pre><p>  }];</p>
+<p>  [yellowView makeConstraints:^(MASConstraintMaker *make) {</p>
+<pre><code>make.left.equalTo(redView.right).inset(10);
+</code></pre><p>  }];</p>
+</li>
+</ul>
+<pre><code>[blueView makeConstraints:^(MASConstraintMaker *make) {
+    make.top.left.equalTo(self);
+    make.size.equalTo(@[redView, yellowView, sizeValue]);
+}];
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">	![](https://ws2.sinaimg.cn/large/006tNc79ly1fsgbhz8lw5j30s61iyte5.jpg)</span><br><span class="line"></span><br><span class="line">## Snapkit 使用</span><br><span class="line"></span><br><span class="line">- Swift 中`edgesForExtendedLayout:UIRectEdge` 扩展布局的边缘是一个属性，默认是`All`</span><br></pre></td></tr></table></figure>
+
+self.edgesForExtendedLayout = []
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">	在Swift中闭包参数可以使用$0、$1、$2 一次代表第一个，第二个，第三个参数</span><br><span class="line"></span><br><span class="line">- 使用$0 来代替闭包参数</span><br></pre></td></tr></table></figure>
+
+nullDataImageView.snp.makeConstraints {
+    $0.top.equalTo(view).offset(44)
+    $0.centerX.equalTo(view)
+    $0.width.height.equalTo(200)
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">- `deactivate` 和 `activate` 使用</span><br><span class="line">	</span><br><span class="line">	- `activate` 激活指定的约束</span><br><span class="line">	- `deactivate` 移除指定的约束</span><br><span class="line"></span><br><span class="line">	添加约束</span><br></pre></td></tr></table></figure>
+
+nullDataImageView.snp.makeConstraints {
+    nullDataViewTopConstraint = $0.top.equalTo(view).offset(80).constraint
+    nullDataViewLeftConstraint = $0.left.equalTo(view).inset(10).constraint
+    $0.width.height.equalTo(200)
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">移除对应约束，设置约束再激活约束</span><br></pre></td></tr></table></figure>
+
+nullDataViewLeftConstraint?.deactivate()
+nullDataViewLeftConstraint?.update(inset: 100)
+nullDataViewLeftConstraint?.activate()
+UIView.animate(withDuration: 1.5) {
+    self.view.layoutIfNeeded()
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 更新约束</span><br><span class="line"></span><br><span class="line">	- 添加约束</span><br></pre></td></tr></table></figure>
+
+nullDataImageView.snp.makeConstraints {
+    nullDataViewTopConstraint = $0.top.equalTo(view).offset(64).constraint
+    $0.centerX.equalTo(view)
+    $0.width.height.equalTo(200)
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">- 更新约束</span><br></pre></td></tr></table></figure>
+
+nullDataViewTopConstraint?.update(inset: 84)
+UIView.animate(withDuration: 0.5, delay: 0, options: .curveEaseOut, animations: {
+    self.view.layoutIfNeeded()
+}) { (finished) in
+    print(&quot;动画执行完毕&quot;)
+}
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">	</span><br><span class="line">- 添加`debug`模式中的	`key`使用`labeled()`方法</span><br></pre></td></tr></table></figure>
+
+nullDataImageView.snp.makeConstraints {
+    nullDataViewTopConstraint = $0.top.equalTo(view).offset(80).constraint
+    nullDataViewLeftConstraint = $0.left.equalTo(view).inset(10).constraint
+    $0.width.height.equalTo(200).labeled(&quot;width和height约束&quot;)
+}
+```
+</code></pre><ul>
+<li>其他注意点都和<code>Masnory</code>相同</li>
+</ul>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2018/06/28/Masonry:Snapkit使用总结/" data-id="cjlgmf6n0000dbbfwgr88ow0z" class="article-share-link">Teilen</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-Swift 基础知识" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/06/19/Swift 基础知识/" class="article-date">
+  <time datetime="2018-06-19T07:05:57.922Z" itemprop="datePublished">2018-06-19</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>Swift 学习</p>
+<h2 id="枚举"><a href="#枚举" class="headerlink" title="枚举"></a>枚举</h2><h4 id="1-定义-rawValue-为-Int-类型，初始值为1，"><a href="#1-定义-rawValue-为-Int-类型，初始值为1，" class="headerlink" title="1. 定义 rawValue 为 Int 类型，初始值为1，"></a>1. 定义 rawValue 为 Int 类型，初始值为1，</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">enum Month: Int &#123;</span><br><span class="line">    case January = 1</span><br><span class="line">    case February</span><br><span class="line">    case March</span><br><span class="line">    case April</span><br><span class="line">    case May</span><br><span class="line">    case June</span><br><span class="line">    case July</span><br><span class="line">    case August</span><br><span class="line">    case September</span><br><span class="line">    case October</span><br><span class="line">    case November</span><br><span class="line">    case December</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2-rawValue-的整型值可以不连续"><a href="#2-rawValue-的整型值可以不连续" class="headerlink" title="2. rawValue 的整型值可以不连续"></a>2. rawValue 的整型值可以不连续</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">enum Season: Int &#123;</span><br><span class="line">    case Spring = 1</span><br><span class="line">    case Summer = 5</span><br><span class="line">    case Autumn = 10</span><br><span class="line">    case Winter = 40</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3-枚举可以是字符串-字符串是变量名和-rawValue-的值相等"><a href="#3-枚举可以是字符串-字符串是变量名和-rawValue-的值相等" class="headerlink" title="3. 枚举可以是字符串,字符串是变量名和 rawValue 的值相等"></a>3. 枚举可以是字符串,字符串是<code>变量名</code>和 <code>rawValue</code> 的值相等</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">enum ProgrammerLanguae: String &#123;</span><br><span class="line">    case Swift</span><br><span class="line">    case OC = &quot;Objective-C&quot;</span><br><span class="line">    case C = &quot;语言&quot;</span><br><span class="line">    case RN = &quot;React-Native&quot;</span><br><span class="line">    case Java</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用<code>rawValue</code></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">func residueNewYear(month: Month) -&gt; Int &#123;</span><br><span class="line">    return 12 - month.rawValue</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>调用枚举的Moth的构造函数生成一个Month</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let month = Month(rawValue: 5)</span><br><span class="line">let swift = ProgrammerLanguae.Swift.rawValue</span><br><span class="line">let oc = ProgrammerLanguae.OC</span><br><span class="line">let RN = ProgrammerLanguae.RN.rawValue</span><br></pre></td></tr></table></figure>
+<h4 id="4-枚举关联值-associate-value"><a href="#4-枚举关联值-associate-value" class="headerlink" title="4. 枚举关联值 associate value"></a>4. 枚举关联值 associate value</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">enum Status &#123;</span><br><span class="line">    case success(Int)</span><br><span class="line">    case fail(String)</span><br><span class="line">    case null // 未关联值</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">func associateValueTest(isSuccess: Bool) -&gt; Status &#123;</span><br><span class="line">    if isSuccess &#123;</span><br><span class="line">        return .success(200)</span><br><span class="line">    &#125;</span><br><span class="line">    return .fail(&quot;失败&quot;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="5-枚举associateValue多个值"><a href="#5-枚举associateValue多个值" class="headerlink" title="5. 枚举associateValue多个值"></a>5. 枚举associateValue多个值</h4><ul>
+<li>本质是关联了一个元祖(value0, value1, value2…)</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">enum Shape &#123;</span><br><span class="line">    case Square(width: Double)</span><br><span class="line">    case Reactangle(width: Double, height: Double)</span><br><span class="line">    case Circle(x: Double, y: Double, radius: Double)</span><br><span class="line">    case Point</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let square = Shape.Square(width: 20)</span><br><span class="line">let reactangle = Shape.Reactangle(width: 10, height: 20)</span><br><span class="line">let circle = Shape.Circle(x: 10, y: 10, radius: 20)</span><br><span class="line">let point = Shape.Point</span><br><span class="line"></span><br><span class="line">private func area(shape: Shape) -&gt; Double &#123;</span><br><span class="line">    switch shape &#123;</span><br><span class="line">    case let .Square(width):</span><br><span class="line">        return width * width</span><br><span class="line">    case let .Reactangle(width, height):</span><br><span class="line">        return width * height</span><br><span class="line">    case let .Circle(_, _, radius):</span><br><span class="line">        return radius * radius * Double.pi</span><br><span class="line">    case .Point:</span><br><span class="line">        return 0</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="6-递归枚举"><a href="#6-递归枚举" class="headerlink" title="6. 递归枚举"></a>6. 递归枚举</h4><ul>
+<li>定义一个递归算术表达式</li>
+<li>使用 indirect 来修饰</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">indirect enum ArithmeticalExpression &#123;</span><br><span class="line">    case Number(Int)</span><br><span class="line">    case Addition(ArithmeticalExpression, ArithmeticalExpression) // + 时两边也是一个表达式</span><br><span class="line">    case Multiplication(ArithmeticalExpression, ArithmeticalExpression) // * 时两边也是一个表达式</span><br><span class="line">    </span><br><span class="line">//    indirect case Addition(ArithmeticalExpression, ArithmeticalExpression) // + 时两边也是一个表达式</span><br><span class="line">//    indirect case Multiplication(ArithmeticalExpression, ArithmeticalExpression) // * 时两边也是一个表达式</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>递归表达式使用 (2+3) * 4</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">let two = ArithmeticalExpression.Number(2)</span><br><span class="line">let one = ArithmeticalExpression.Number(3)</span><br><span class="line">let sum = ArithmeticalExpression.Addition(two, one)</span><br><span class="line">let indirectEnumResult = ArithmeticalExpression.Multiplication(sum, ArithmeticalExpression.Number(4))</span><br></pre></td></tr></table></figure>
+<ul>
+<li>计算表达式值的函数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">private func calculate(expression: ArithmeticalExpression) -&gt; Int &#123;</span><br><span class="line">    switch expression &#123;</span><br><span class="line">    case let .Number(value):</span><br><span class="line">        return value</span><br><span class="line">    case let .Addition(left, right):</span><br><span class="line">        return calculate(expression: left) + calculate(expression: right)</span><br><span class="line">    case let .Multiplication(left, right):</span><br><span class="line">        return calculate(expression: left) * calculate(expression: right)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h2 id="结构体"><a href="#结构体" class="headerlink" title="结构体"></a>结构体</h2><ul>
+<li>结构体中的属性值没有初始化时必须使用构造函数来初始化，否则报错</li>
+<li></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">struct Location &#123;</span><br><span class="line">    var latitude: Double</span><br><span class="line">    var longitude: Double</span><br><span class="line">    var placeName: String?</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let location1 = Location(latitude: 37.3230, longitude: -122.0322, placeName: &quot;测试&quot;)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>结构体中属性如果都赋了初始值就可以直接初始化</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">struct Location2 &#123;</span><br><span class="line">    var latitude: Double = 0</span><br><span class="line">    var longitude: Double = 0</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let location2 = Location2()</span><br></pre></td></tr></table></figure>
+<ul>
+<li>如果未指定初始值，swift 就不会默认初始化为（不初始化）</li>
+<li>当属性值为可选值时此时允许值为nil，那么就允许不通过构造函数来初始化赋值</li>
+<li>let 只有一次赋值机会</li>
+<li>不管是类还是结构体都应该提供一个全参数的构造函数 <code>init(latitude: Double, longitude: Double, placeName: String?)</code></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">struct Location3 &#123;</span><br><span class="line">    let latitude: Double</span><br><span class="line">    let longtitude: Double</span><br><span class="line">    var placeName: String?</span><br><span class="line">    </span><br><span class="line">    init(coordinateString: String) &#123;</span><br><span class="line">        let index = coordinateString.index(of: &quot;,&quot;)</span><br><span class="line">        let index1 = coordinateString.index(after: index!)</span><br><span class="line">        let test_1 = coordinateString.prefix(upTo: index!)</span><br><span class="line">        let test_2 = coordinateString.suffix(from: index1)</span><br><span class="line">        </span><br><span class="line">        latitude = Double(test_1)!</span><br><span class="line">        longtitude = Double(test_2)!</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    init(latitude: Double, longitude: Double, placeName: String?) &#123;</span><br><span class="line">        self.latitude = latitude</span><br><span class="line">        self.longtitude = longitude</span><br><span class="line">        self.placeName = placeName</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let test3 = Location3(coordinateString: &quot;12,45&quot;)</span><br></pre></td></tr></table></figure>
+<h2 id="类"><a href="#类" class="headerlink" title="类"></a>类</h2><h2 id="属性和方法"><a href="#属性和方法" class="headerlink" title="属性和方法"></a>属性和方法</h2><h4 id="计算型属性"><a href="#计算型属性" class="headerlink" title="计算型属性"></a>计算型属性</h4><h4 id="类型属性"><a href="#类型属性" class="headerlink" title="类型属性"></a>类型属性</h4><h4 id="类型方法"><a href="#类型方法" class="headerlink" title="类型方法"></a>类型方法</h4><h4 id="属性管擦器"><a href="#属性管擦器" class="headerlink" title="属性管擦器"></a>属性管擦器</h4><h4 id="延迟属性"><a href="#延迟属性" class="headerlink" title="延迟属性"></a>延迟属性</h4><h4 id="访问控制"><a href="#访问控制" class="headerlink" title="访问控制"></a>访问控制</h4><h4 id="单利模式"><a href="#单利模式" class="headerlink" title="单利模式"></a>单利模式</h4><h2 id="继承和构造函数"><a href="#继承和构造函数" class="headerlink" title="继承和构造函数"></a>继承和构造函数</h2><h4 id="swift-中继承"><a href="#swift-中继承" class="headerlink" title="swift 中继承"></a>swift 中继承</h4><h4 id="多态性"><a href="#多态性" class="headerlink" title="多态性"></a>多态性</h4><h4 id="属性和函数重载"><a href="#属性和函数重载" class="headerlink" title="属性和函数重载"></a>属性和函数重载</h4><h4 id="子类两段式构造"><a href="#子类两段式构造" class="headerlink" title="子类两段式构造"></a>子类两段式构造</h4><ul>
+<li><p>子类构造函数分为两段，第一段是构造自己，第二段是构造父类</p>
+<ul>
+<li>父类中构造函数</li>
+<li>子类要设置一个自己的构造函数</li>
+<li>子类构造函数中需要先初始化自己的属性</li>
+<li><p>然后在构造函数中调用父类初始化父类构造函数中的相关属性</p>
+<p>父类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Father &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var sex: Int = 0</span><br><span class="line">    var old: Int = 32</span><br><span class="line">    var desc: String &#123;</span><br><span class="line">        return &quot;我是\(name)&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func run() &#123;</span><br><span class="line">        print(&quot;Father can Running&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+</li>
+</ul>
+<pre><code>子类
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">class Son: Father &#123;</span><br><span class="line"></span><br><span class="line">    var isSwimming = true</span><br><span class="line">    </span><br><span class="line">    var computer: String</span><br><span class="line">    </span><br><span class="line">    override var desc: String &#123;</span><br><span class="line">        return &quot;Son is \(name)&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    init(name: String, computer: String) &#123;</span><br><span class="line">        self.computer = computer</span><br><span class="line">        super.init(name: name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</code></pre><ul>
+<li><p>子类两段构造都完成后子类的初始化才完成，可以使用<code>self</code>调用属性或者方法</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">init(name: String, computer: String) &#123;</span><br><span class="line">       self.computer = computer</span><br><span class="line">       self.getToys() // 此代码报错，子类初始化未完成</span><br><span class="line">       super.init(name: name)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+</li>
+</ul>
+<h4 id="便利构造函数和指定构造函数"><a href="#便利构造函数和指定构造函数" class="headerlink" title="便利构造函数和指定构造函数"></a>便利构造函数和指定构造函数</h4><ul>
+<li>便利构造函数只能调用自己的指定构造函数</li>
+<li>指定构造函数通过一系列的调用都会调用super.init()</li>
+<li>便利构造函数无法调用super.init()</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br></pre></td><td class="code"><pre><span class="line">class Father &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var sex: Int = 0</span><br><span class="line">    var old: Int = 32</span><br><span class="line">    var desc: String &#123;</span><br><span class="line">        return &quot;我是\(name)&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    init(name: String, old: Int) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">        self.old = old</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func run() &#123;</span><br><span class="line">        print(&quot;Father can Running&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">class Son: Father &#123;</span><br><span class="line">    var isSwimming = true</span><br><span class="line">    var computer: String</span><br><span class="line">    </span><br><span class="line">    override var desc: String &#123;</span><br><span class="line">        return &quot;Son is \(name)&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 子类指定构造函数,调用了父类的指定构造函数</span><br><span class="line">    init(name: String, computer: String) &#123;</span><br><span class="line">        self.computer = computer</span><br><span class="line">        super.init(name: name)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 子类便利构造函数，调用了指定构造函数</span><br><span class="line">    convenience override init(name: String) &#123;</span><br><span class="line">        let computer = &quot;iMac&quot;</span><br><span class="line">        self.init(name: name, computer: computer)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="构造函数继承"><a href="#构造函数继承" class="headerlink" title="构造函数继承"></a>构造函数继承</h4><ul>
+<li>子类有可能会继承父类的构造函数</li>
+<li>子类没有实现父类的任何指定构造函数；则自动继承父类的所有指定构造函数, 因为继承了指定构造函数所以同时便利构造函数也被继承</li>
+</ul>
+<p>父类<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line">class Father &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    var sex: Int = 0</span><br><span class="line">    var old: Int = 32</span><br><span class="line">    var desc: String &#123;</span><br><span class="line">        return &quot;我是\(name)&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// Father指定构造函数-1</span><br><span class="line">    init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// Father指定构造函数-2</span><br><span class="line">    init(name: String, old: Int) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">        self.old = old</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// Father便利构造函数</span><br><span class="line">    convenience init(old: Int) &#123;</span><br><span class="line">        self.init(name: &quot;Father&quot;, old: old)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    func run() &#123;</span><br><span class="line">        print(&quot;Father can Running&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>子类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br></pre></td><td class="code"><pre><span class="line">class Son: Father &#123;</span><br><span class="line">    var isSwimming = true</span><br><span class="line">    var computer: String</span><br><span class="line">    var job: String</span><br><span class="line">    </span><br><span class="line">    override var desc: String &#123;</span><br><span class="line">        return &quot;Son is \(name)&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 子类重载的指定构造函数-1</span><br><span class="line">    convenience override init(name: String) &#123;</span><br><span class="line">        self.init(name: name, computer: &quot;Dell&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 子类重载的指定构造函数-2</span><br><span class="line">    override convenience init(name: String, old: Int) &#123;</span><br><span class="line">        self.init(name: name, computer: &quot;acer&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    </span><br><span class="line">    /// 子类自己的指定构造函数,调用了父类的指定构造函数</span><br><span class="line">    init(name: String, computer: String) &#123;</span><br><span class="line">        self.computer = computer</span><br><span class="line">        self.job = &quot;C#&quot;</span><br><span class="line">        super.init(name: name)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 子类便利构造函数，调用了自己指定构造函数</span><br><span class="line">    convenience init(computer: String) &#123;</span><br><span class="line">        let name = &quot;小张&quot;</span><br><span class="line">        self.init(name: name, computer: computer)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>未实现父类任何的指定构造函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">class Grandson: Son &#123;</span><br><span class="line">    var toy: String = &quot;dog toys&quot;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>子类可以调用的构造函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let grandSon0 = Grandson(old: 4)</span><br><span class="line">let grandSon1 = Grandson(computer: &quot;Mi&quot;)</span><br><span class="line">let grandSon2 = Grandson(name: &quot;小王&quot;)</span><br><span class="line">let grandSon3 = Grandson(name: &quot;小虎&quot;, computer: &quot;👽&quot;)</span><br><span class="line">let grandSon4 = Grandson(name: &quot;小李&quot;, old: 8)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>子类实现了父类所有的指定构造函数，则自动继承父类的所有便利构造函数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">let son0 = Son(old: 30)</span><br><span class="line">let son1 = Son(computer: &quot;Mi&quot;)</span><br><span class="line">let son2 = Son(name: &quot;小王&quot;)</span><br><span class="line">let son3 = Son(name: &quot;小虎&quot;, computer: &quot;👽&quot;)</span><br><span class="line">let son4 = Son(name: &quot;小李&quot;, old: 8)</span><br></pre></td></tr></table></figure>
+<h4 id="required-构造函数"><a href="#required-构造函数" class="headerlink" title="required 构造函数"></a>required 构造函数</h4><ul>
+<li>父类中有被 required 关键词修饰的构造函数子类必须实现此构造函数</li>
+<li>子类实现的此构造函数不需要再使用 override 关键词修饰，需要 required 修饰</li>
+</ul>
+<p>子类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">class Father &#123;</span><br><span class="line">    var name: String</span><br><span class="line">    /// Father指定构造函数-1</span><br><span class="line">    // required 修饰的指定构造函数子类中必须实现</span><br><span class="line">    required init(name: String) &#123;</span><br><span class="line">        self.name = name</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>父类</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Son: Father &#123;</span><br><span class="line">    var isSwimming = true</span><br><span class="line">    var computer: String</span><br><span class="line">    </span><br><span class="line">    /// 子类重载的指定构造函数-1</span><br><span class="line">    convenience required init(name: String) &#123;</span><br><span class="line">        self.init(name: name, computer: &quot;Dell&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    /// 子类自己的指定构造函数,调用了父类的指定构造函数</span><br><span class="line">    init(name: String, computer: String) &#123;</span><br><span class="line">        self.computer = computer</span><br><span class="line">        self.job = &quot;C#&quot;</span><br><span class="line">        super.init(name: name)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>子类如果实现了自己的指定构造函数，那么 required 修饰指定构造函数就初始化失败，因为自己实现了指定构造函数所以不能继承父类中的构造函数，此时可以自己实现被required 修饰的便利构造函数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">class Son1: Son &#123;</span><br><span class="line">    var sport: String</span><br><span class="line">    </span><br><span class="line">    // 指定构造函数，需要调用父类的指定构造函数</span><br><span class="line">    init(name: String, sport: String) &#123;</span><br><span class="line">        self.sport = sport</span><br><span class="line">        Son.init(name: name)</span><br><span class="line">    &#125;</span><br><span class="line">    </span><br><span class="line">    // 父类中有被 required 关键词修饰的必须实现的构造函数</span><br><span class="line">    convenience required init(name: String) &#123;</span><br><span class="line">       // fatalError(&quot;init(name:) has not been implemented&quot;)</span><br><span class="line">        // 调用自己的指定构造函数，</span><br><span class="line">        self.init(name: name, sport: &quot;&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2018/06/19/Swift 基础知识/" data-id="cjlgmf6oo002hbbfwp4uvcwur" class="article-share-link">Teilen</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
+    <article id="post-SwiftLint使用" class="article article-type-post" itemscope itemprop="blogPost">
+  <div class="article-meta">
+    <a href="/2018/03/17/SwiftLint使用/" class="article-date">
+  <time datetime="2018-03-17T04:19:58.031Z" itemprop="datePublished">2018-03-17</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+    <div class="article-entry" itemprop="articleBody">
+      
+        <p>SwiftLint 将 swift 强制检查代码风格</p>
+<p><a href="https://github.com/realm/SwiftLint/blob/master/README_CN.md">教程</a></p>
+
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://github.com/aTreey/2018/03/17/SwiftLint使用/" data-id="cjlgmf6ni0017bbfwuik347ff" class="article-share-link">Teilen</a>
+      
+      
+    </footer>
+  </div>
+  
+</article>
+
+
+  
     <article id="post-Mac安装VirtualBox连接U盘" class="article article-type-post" itemscope itemprop="blogPost">
   <div class="article-meta">
     <a href="/2018/02/03/Mac安装VirtualBox连接U盘/" class="article-date">
@@ -91,7 +462,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/02/03/Mac安装VirtualBox连接U盘/" data-id="cjl8z6ym3000f5g81s15aozkg" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/aTreey/2018/02/03/Mac安装VirtualBox连接U盘/" data-id="cjlgmf6mu000abbfwqx1p5ca2" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -147,7 +518,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/19/Block学习探究/" data-id="cjl8z6yln00015g818k586byx" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/aTreey/2018/01/19/Block学习探究/" data-id="cjlgmf6me0000bbfwlfwansjz" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -223,7 +594,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/18/常见问题总结-二/" data-id="cjl8z6ymx001w5g818x7bgehu" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/aTreey/2018/01/18/常见问题总结-二/" data-id="cjlgmf6o00023bbfwygrty8it" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -333,7 +704,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/17/面试中常见问题总结/" data-id="cjl8z6yno002f5g81po3myv1x" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/aTreey/2018/01/17/面试中常见问题总结/" data-id="cjlgmf6o6002dbbfwp66yb6q0" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -509,7 +880,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/12/iOS即时通讯实现二/" data-id="cjl8z6ymt001m5g81gfvc8qrr" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/aTreey/2018/01/12/iOS即时通讯实现二/" data-id="cjlgmf6nu001sbbfwhi1s8azp" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -583,463 +954,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/10/知识归纳总结/" data-id="cjl8z6yn000225g81bvquxjcg" class="article-share-link">Teilen</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Swift加密相关" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2018/01/08/Swift加密相关/" class="article-date">
-  <time datetime="2018-01-08T13:33:01.000Z" itemprop="datePublished">2018-01-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2018/01/08/Swift加密相关/">Swift加密相关</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>最近公司项目开发中引用了 <code>Swift</code> 与 <code>OC</code> 混编, 涉及到了加密相关, 使用了第三方 <code>CryptoSwift</code>, 以下是使用过程中的简单记录</p>
-<h3 id="CryptoSwift简介"><a href="#CryptoSwift简介" class="headerlink" title="CryptoSwift简介"></a>CryptoSwift简介</h3><ul>
-<li>github: <a href="https://github.com/krzyzanowskim/CryptoSwift">https://github.com/krzyzanowskim/CryptoSwift</a></li>
-<li>使用Swift 编写的加密工具包，支持多种加密算法，如：MD5、SHA1、AES-128, AES-192, AES-256… 等等</li>
-</ul>
-<h3 id="数组转换"><a href="#数组转换" class="headerlink" title="数组转换"></a>数组转换</h3><ul>
-<li><p><code>data</code> 转化为字节数组</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let bytes = data.bytes</span><br><span class="line">   print(bytes)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>字节数组转化为 <code>data</code></p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">let data = Data(bytes: [0x01, 0x02, 0x03])</span><br><span class="line">   print(data)</span><br></pre></td></tr></table></figure>
-</li>
-<li><p>十六进制创建字节</p>
-<pre><code>let bytes_Hex = Array&lt;UInt8&gt;(hex: &quot;0x010203&quot;)
-print(bytes_Hex)
-</code></pre></li>
-<li><p>字节转十六进制数</p>
-<pre><code>let hex = bytes_Hex.toHexString()
-print(hex)       
-</code></pre></li>
-</ul>
-<ul>
-<li><p>字符串生成字节数组</p>
-<pre><code>let string2bytes = &quot;string&quot;.bytes
-print(string2bytes)
-</code></pre></li>
-</ul>
-<ul>
-<li><p>字节数组 base64</p>
-<pre><code>let bytes1: [UInt8] = [1, 2, 3]
-let base64Str = bytes1.toBase64()
-print(base64Str!)
-</code></pre></li>
-<li><p>字符串base64</p>
-<pre><code>let str0 = &quot;test&quot;
-let base64Str1 = str0.bytes.toBase64()
-print(base64Str1!)
-</code></pre></li>
-</ul>
-<h3 id="MD5加密"><a href="#MD5加密" class="headerlink" title="MD5加密"></a>MD5加密</h3><ul>
-<li>MD5（RFC1321）诞生于 1991 年，全称是“Message-Digest Algorithm(信息摘要算法)5”，由 MIT 的计算机安全实验室和 RSA 安全公司共同提出。</li>
-<li><p>之前已经有 MD2、MD3 和 MD4 几种算法。MD5 克服了 MD4 的缺陷，生成 128bit 的摘要信息串，出现之后迅速成为主流算法 </p>
-</li>
-<li><p>字节数组MD5</p>
-<pre><code>let str = &quot;测试test&quot;
-let bytes = str.bytes
-
-// 写法一
-let digest = bytes.md5().toHexString()
-print(digest)
-// 04f47b69e3573867a5b3c1e5edb00789
-
-// 写法二
-let digest1 = Digest.md5(bytes).toHexString()
-print(digest1)
-// 04f47b69e3573867a5b3c1e5edb00789
-</code></pre></li>
-<li><p>Data的MD5值</p>
-<pre><code>/// data MD5
-let data = Data(str.bytes)
-let digest3 = data.md5().toHexString()
-print(digest3)
-// 04f47b69e3573867a5b3c1e5edb00789
-</code></pre></li>
-<li><p>字符串MD5</p>
-<pre><code>///写法 一
-let digest4 = str.md5()
-print(digest4)
-// 04f47b69e3573867a5b3c1e5edb00789
-
-// 写法二
-do {
-    var digest4_2 = MD5()
-
-    let _ = try digest4_2.update(withBytes: &quot;测试&quot;.bytes)
-    let _ = try digest4_2.update(withBytes: &quot;test&quot;.bytes)
-    let result = try digest4_2.finish()
-    print(result.toHexString())
-    //04f47b69e3573867a5b3c1e5edb00789
-} catch {
-
-}    
-</code></pre></li>
-</ul>
-<h3 id="哈希算法"><a href="#哈希算法" class="headerlink" title="哈希算法"></a>哈希算法</h3><ul>
-<li><p>字节数组SHA值</p>
-<pre><code>let str = &quot;测试test&quot;
-let bytes = str.bytes
-
-//方式一
-let digest1 = bytes.sha1().toHexString()
-let digest2 = bytes.sha224().toHexString()
-let digest3 = bytes.sha256().toHexString()
-let digest4 = bytes.sha384().toHexString()
-let digest5 = bytes.sha512().toHexString()
-print(digest1, digest2, digest3, digest4 ,digest5, separator: &quot;\n&quot;)
-
-//方式二
-let digest6 = Digest.sha1(bytes).toHexString()
-let digest7 = Digest.sha224(bytes).toHexString()
-let digest8 = Digest.sha256(bytes).toHexString()
-let digest9 = Digest.sha384(bytes).toHexString()
-let digest10 = Digest.sha512(bytes).toHexString()
-print(digest6, digest7, digest8, digest9 ,digest10, separator: &quot;\n&quot;)
-</code></pre></li>
-</ul>
-<ul>
-<li><p>Data的SHA值</p>
-<pre><code>let data = Data(bytes: str.bytes)
-let digest11 = data.sha1().toHexString()
-let digest12 = data.sha224().toHexString()
-let digest13 = data.sha256().toHexString()
-let digest14 = data.sha384().toHexString()
-let digest15 = data.sha512().toHexString()
-print(digest11, digest12, digest13, digest14 ,digest15, separator: &quot;\n&quot;)
-</code></pre></li>
-</ul>
-<ul>
-<li><p>字符串的SHA值</p>
-<pre><code>let digest16 = str.sha1()
-let digest17 = str.sha224()
-let digest18 = str.sha256()
-let digest19 = str.sha384()
-let digest20 = str.sha512()
-print(digest16, digest17, digest18, digest19 ,digest20, separator: &quot;\n&quot;)
-</code></pre></li>
-</ul>
-<pre><code>// 方式一
-let digest_str = str.sha1()
-print(digest_str)
-
-// 方式二
-do {
-    var digest_str = SHA1()
-    let _ = try digest_str.update(withBytes: Array(&quot;测试&quot;.bytes))
-    let _ = try digest_str.update(withBytes: Array(&quot;test&quot;.bytes))
-    let result = try digest_str.finish()
-    print(result.toHexString())
-} catch {
-
-}
-</code></pre><h3 id="AES-加密"><a href="#AES-加密" class="headerlink" title="AES 加密"></a>AES 加密</h3><ul>
-<li><p>key：公共密钥</p>
-</li>
-<li><p>IV： 密钥偏移量</p>
-</li>
-<li><p>padding：key 的补码方式</p>
-<pre><code>key 长度不够16 字节时，需要手动填充, zeroPadding 将其补齐至 blockSize 的整数倍
-zeroPadding 补齐规则:
-- 将长度补齐至 blockSize 参数的整数倍。比如我们将 blockSize 设置为 AES.blockSize（16）
-- 如果长度小于 16 字节：则尾部补 0，直到满足 16 字节。
-- 如果长度大于等于 16 字节，小于 32 字节：则尾部补 0，直到满足 32 字节。
-- 如果长度大于等于 32 字节，小于 48 字节：则尾部补 0，直到满足 48 字节。 以此类推......
-</code></pre></li>
-<li><p>补码方式padding, noPadding, zeroPadding, pkcs7, pkcs5, 默认使用 pkcs7,两者写法结果相同</p>
-</li>
-</ul>
-<pre><code>let iv_paddding = &quot;1234567890123456&quot; // 默认是
-let aes_padding1 = try AES(key: key.bytes, blockMode: .CBC(iv: iv_paddding.bytes))
-let aes_padding2 = try AES(key: key.bytes, blockMode: .CBC(iv: iv_paddding.bytes), padding: .pkcs7)            
-</code></pre><ul>
-<li><p>ECB 模式</p>
-<pre><code>let key = &quot;hangge.com123456&quot;
-let str = &quot;E蜂通信&quot;
-print(&quot;加密前 \(str)&quot;)
-
-//MARK: 使用ECB 模式， , 使用aes128 加密
-let aes = try AES(key: key.bytes, blockMode: .ECB)
-let encrpyted = try aes.encrypt(str.bytes)
-print(&quot;加密后 \(encrpyted)&quot;, separator: &quot;-----&quot;)
-
- /// 解密
- let decrypted = try aes.decrypt(encrpyted)
- print(&quot;解密后 \(decrypted)&quot;)
- let decryptedString = String(data: Data(decrypted), encoding: .utf8)!
- print(&quot;解密后字符串 \(decryptedString)&quot;)
-</code></pre></li>
-</ul>
-<ul>
-<li><p>CBC 模式</p>
-<pre><code>//MARK: 使用CBC 模式, 需要提供一个额外的密钥偏移量 iv
-
-    /// 写法 1 --  便捷写法
-    // 偏移量
-    let iv = &quot;1234567890123456&quot; // 默认是
-
-    // TODO: 随机密钥偏移量
-    let data = Data(bytes: AES.randomIV(AES.blockSize))
-    let random_iv = String(data: data, encoding: .utf8)
-</code></pre></li>
-</ul>
-<pre><code>/// 写法 2 --
-// 创建密码器
-let cbc_aes = try AES(key: key.bytes, blockMode: .CBC(iv: iv.bytes))
-
-let cbc_aes2 = try AES(key: key, iv: iv)
-
-
-let cbc_aes3 = try AES(key: key, iv: iv)
-
-let cbc_encrypted = try cbc_aes.encrypt(str.bytes)
-
-let cbc_encrypted2 = try cbc_aes2.encrypt(str.bytes)
-
-let cbc_encrypted3 = try cbc_aes3.encrypt(str.bytes)
-
-
-// 便捷写法解密
-let cbc_decrypted = try cbc_aes.decrypt(cbc_encrypted)
-let cbc_decryptedData = Data(cbc_decrypted)
-let cbc_decryptedStr = String(data: cbc_decryptedData, encoding: .utf8)
-print(cbc_decryptedStr)
-
-// 正常写法2 解密
-let cbc_decrypted2 = try cbc_aes2.decrypt(cbc_encrypted2)
-let cbc_decryptedStr2 = String(data: Data(cbc_decrypted2), encoding: .utf8)
-print(cbc_decryptedStr2)
-
-
-// 随机密钥偏移量解密
-let cbc_decrypted3 = try cbc_aes3.decrypt(cbc_encrypted3)
-let cbc_decryptedStr3 = String(data: Data(cbc_decrypted3), encoding: .utf8)
-print(cbc_decryptedStr3)
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2018/01/08/Swift加密相关/" data-id="cjl8z6ymo00185g814boavkeu" class="article-share-link">Teilen</a>
-      
-      
-  <ul class="article-tag-list"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/AES-Base64-MD5/">AES, Base64, MD5</a></li></ul>
-
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-Mac-安装MySQL" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/12/14/Mac-安装MySQL/" class="article-date">
-  <time datetime="2017-12-14T14:52:19.000Z" itemprop="datePublished">2017-12-14</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/14/Mac-安装MySQL/">Mac 安装MySQL</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>搭建 <code>XMPP</code> 即使通讯</p>
-<h2 id="安装MySQL数据库"><a href="#安装MySQL数据库" class="headerlink" title="安装MySQL数据库"></a>安装MySQL数据库</h2><ul>
-<li><p>安装MySQL 数据库    </p>
-<ul>
-<li><p><a href="https://www.mysql.com/" target="_blank" rel="noopener">官网</a> 下载安装包</p>
-<p><strong>特别强调：不要一直<code>下一步</code>最后的时候会有个弹窗提示你生成root的临时密码，记录一下</strong></p>
-</li>
-</ul>
-</li>
-<li><p>安装数据库管理工具 <code>MySQLWorkbench</code></p>
-<p> 官网安装包下载安装</p>
-</li>
-<li><p>修改数据库 root 密码，</p>
-<p>  打开<code>MySQLWorkbench</code> 随便打开一个SQL 输入安装时记录的密码，确认后提示你修改密码，</p>
-</li>
-<li><p>如果为记住安装时密码，参考下面链接修改</p>
-<p>  <a href="https://www.cnblogs.com/sunny3096/p/7954129.html" target="_blank" rel="noopener"></a> </p>
-</li>
-</ul>
-<h2 id="安装-openfire"><a href="#安装-openfire" class="headerlink" title="安装 openfire"></a>安装 openfire</h2><ul>
-<li><p><a href="https://www.igniterealtime.org/downloads/index.jsp" target="_blank" rel="noopener">官网</a> 下载安装包安装</p>
-</li>
-<li><p>安装后需重启系统偏好设置</p>
-</li>
-<li>如果出现右边的管理员配置按钮不能点击，请使用 <code>brew</code> 安装 或者更新 <code>Java</code> 环境，<code>openfire</code> 需要 <code>Java</code> 环境  </li>
-</ul>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/12/14/Mac-安装MySQL/" data-id="cjl8z6ym0000b5g81tii54esx" class="article-share-link">Teilen</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-本地已有项目添加Pod" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/12/02/本地已有项目添加Pod/" class="article-date">
-  <time datetime="2017-12-01T16:38:18.000Z" itemprop="datePublished">2017-12-02</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/12/02/本地已有项目添加Pod/">本地已有项目添加Pod</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <p>上一篇中主要记录了如何使用 <code>pod</code> 工具自动创建 <code>pod</code> 库并且生成一个测试Demo，这边主要记录给已有的项目添加 <code>pod</code></p>
-<h2 id="创建-podsepc-文件"><a href="#创建-podsepc-文件" class="headerlink" title="创建 .podsepc 文件"></a>创建 .podsepc 文件</h2><ul>
-<li><p><code>cd</code> 到已有项目的根目录执行命令： <code>pod spec create [ProjectName].podspec</code></p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod spec create EmotionKeyboard.podspec</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<h2 id="修改编辑-podsepc-文件"><a href="#修改编辑-podsepc-文件" class="headerlink" title="修改编辑 .podsepc 文件"></a>修改编辑 <code>.podsepc</code> 文件</h2><pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br></pre></td><td class="code"><pre><span class="line">	s.name         = &quot;EmotionKeyboard&quot;</span><br><span class="line">  	s.version      = &quot;0.0.1&quot;</span><br><span class="line">  	s.summary      = &quot;A  Emotional Keyboard.&quot;</span><br><span class="line">  	</span><br><span class="line">  	# 此处的格式不能修改</span><br><span class="line">  	s.description  = &lt;&lt;-DESC</span><br><span class="line"></span><br><span class="line">	Swift Emotional Keyboard</span><br><span class="line">                   DESC</span><br><span class="line"></span><br><span class="line">	s.homepage     = &quot;https://github.com/aTreey/EmotionKeyboard&quot;</span><br><span class="line">	</span><br><span class="line">	# 两种写法，使用下面第二种  </span><br><span class="line">	# s.license      = &quot;MIT (example)&quot;</span><br><span class="line">	s.license      = &#123; :type =&gt; &quot;MIT&quot;, :file =&gt; &quot;LICENSE&quot; &#125;</span><br><span class="line">	</span><br><span class="line">	s.author             = &#123; &quot;aTree&quot; =&gt; &quot;480814177@qq.com&quot; &#125;</span><br><span class="line">	</span><br><span class="line">	s.platform     = :ios, &quot;8.0&quot;</span><br><span class="line">	</span><br><span class="line">	s.source       = &#123; :git =&gt; &quot;https://github.com/aTreey/EmotionKeyboard.git&quot;, :tag =&gt; &quot;#&#123;s.version&#125;&quot; &#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	# 从 .podspec 同级别的目录下起匹配 </span><br><span class="line">	s.source_files  = &quot;EmotionKeyboard&quot;, &quot;EmotionKeyboard/Classes/**/*.&#123;h,m&#125;&quot;</span><br><span class="line">	</span><br><span class="line">	# 设置自己项目中依赖的系统库</span><br><span class="line">	s.framework  = &quot;UIKit&quot;</span><br><span class="line">  	</span><br><span class="line">	``` </span><br><span class="line">	</span><br><span class="line">## 调整文件的目录结构</span><br><span class="line">	</span><br><span class="line">- 在项目根目录下新建一个放组件代码的文件夹</span><br><span class="line">- 如果项目中包含 `bundle` 文件, 需要在组件文件夹下新建一个 `Assets` 文件夹，用来存放组件中的资源</span><br><span class="line"></span><br><span class="line">	最终结果如下:</span><br><span class="line">	</span><br><span class="line">	![](https://ws1.sinaimg.cn/large/a1641e1bly1fm2jl7ykslj21gc0o80xt.jpg))</span><br><span class="line"></span><br><span class="line">- 创建并添加必要文件</span><br><span class="line">	</span><br><span class="line">	- `LICENSE` 文件: 开源许可文件, 如果创建项目的时候选择了开源许可就可以自动生成忽略此步骤,如果没有直接拷贝一份其他的工程中的即可</span><br><span class="line">	- `README.md` 文件: 主要用来说明你开源库的信息及使用方法</span><br><span class="line"></span><br><span class="line">	</span><br><span class="line">## 验证本地 `.podspec` 文件</span><br><span class="line"></span><br><span class="line">- 错误1: `.podspec `中的文件路径设置错误</span><br><span class="line">	</span><br><span class="line">	![](https://ws1.sinaimg.cn/large/a1641e1bly1fm2jlboq82j20v807ejug.jpg)</span><br><span class="line">	</span><br><span class="line">- 错误2: bundle 文件资源路径错误</span><br><span class="line"></span><br><span class="line">	![](https://ws1.sinaimg.cn/large/a1641e1bly1fm2jl4shnnj20zq0cwgqf.jpg)</span><br><span class="line">	</span><br><span class="line"></span><br><span class="line">- 本地验证结果</span><br><span class="line"></span><br><span class="line"> - **EmotionKeyboard passed validation.** 本地验证验证通过</span><br><span class="line"></span><br><span class="line">## 网络验证 `.podspec` 文件 </span><br><span class="line">	</span><br><span class="line">- 给 `master` 分支打上 `.podspec` 文件中对应的 `tag` 标签, 提交推送, </span><br><span class="line">- 执行命令</span><br></pre></td></tr></table></figure>
-
-pod spec lint
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- 网络验证结果</span><br></pre></td></tr></table></figure>
-
-EmotionKeyboard.podspec passed validation.
-```
-</code></pre><p><strong>本文参考</strong></p>
-<p><a href="http://blog.xianqu.org/2015/08/pod-resources/" target="_blank" rel="noopener">给 Pod 添加资源文件</a></p>
-<p><a href="http://swift.gg/2016/12/15/cocoapods-making-guide/" target="_blank" rel="noopener">基于 Swift 创建 CocoaPods 完全指南</a></p>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/12/02/本地已有项目添加Pod/" data-id="cjl8z6ymw001t5g816xb5ntuq" class="article-share-link">Teilen</a>
-      
-      
-    </footer>
-  </div>
-  
-</article>
-
-
-  
-    <article id="post-CocoaPods制作私有pod" class="article article-type-post" itemscope itemprop="blogPost">
-  <div class="article-meta">
-    <a href="/2017/11/29/CocoaPods制作私有pod/" class="article-date">
-  <time datetime="2017-11-29T12:57:56.000Z" itemprop="datePublished">2017-11-29</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
-  
-    <h1 itemprop="name">
-      <a class="article-title" href="/2017/11/29/CocoaPods制作私有pod/">CocoaPods制作私有pod</a>
-    </h1>
-  
-
-      </header>
-    
-    <div class="article-entry" itemprop="articleBody">
-      
-        <h2 id="CocoaPods原理"><a href="#CocoaPods原理" class="headerlink" title="CocoaPods原理"></a>CocoaPods原理</h2><p><strong>本文主要记录制作自己的pod库过程</strong></p>
-<p>CocoaPods 是自动化工具，主要用来管理一些开源的第三方框架，或者是制作自己的私有库,开源库,也可以使用它讲自己的项目组件化。</p>
-<p>具体可以参考：</p>
-<ol>
-<li><a href="https://juejin.im/post/58730a25a22b9d0058971144" target="_blank" rel="noopener">细聊 Cocoapods 与 Xcode 工程配置</a></li>
-<li><a href="https://juejin.im/post/59f2c7eaf265da432c2318e5" target="_blank" rel="noopener">你真的会用 CocoaPods 吗?</a></li>
-</ol>
-<h2 id="CocoaPods-安装"><a href="#CocoaPods-安装" class="headerlink" title="CocoaPods 安装"></a>CocoaPods 安装</h2><p><a href="http://www.pluto-y.com/cocoapods-getting-stared/" target="_blank" rel="noopener">安装教程</a></p>
-<h2 id="创建私有索引仓库"><a href="#创建私有索引仓库" class="headerlink" title="创建私有索引仓库"></a>创建私有索引仓库</h2><p>每次使用第三方开源库的时候只需要在 <code>Podfile</code> 文件中指定所用的库然后 <code>Pod install</code> ，这是因为安装pod的时候 <code>pod setup</code> 从<a href="https://github.com/CocoaPods/Specs">远程仓库</a>（索引库） clone到了本地,此仓库中存放了所有支持pod框架的描述信息(包括每个库的各个版本)</p>
-<p>文件目录：</p>
-<pre><code>~/.cocoapods/repos/master
-</code></pre><ul>
-<li><p>在 <a href="https://gitee.com/" target="_blank" rel="noopener">码云</a> 或者 <a href="">coding</a> 上创建一个私有仓库</p>
-</li>
-<li><p>添加私有库到CocoaPods</p>
-<ul>
-<li><p>格式 <code>pod repo add [repoName] (URL)</code></p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">	pod repo add PrivateSpec https://gitee.com/aapenga/PrivateSpec.git </span><br><span class="line">	```	</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">## 创建本地私有库</span><br><span class="line"></span><br><span class="line"> - `cd` 到任意一个文件夹下, 执行 `pod lib create [项目名]`</span><br><span class="line">	</span><br><span class="line">	``` </span><br><span class="line"> 	pod lib create PPExcelView</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li>将文件放入到生成的 Demo 文件夹 的 <code>Classes</code> 文件目录下</li>
-<li><p><code>cd</code> 到 <code>Example</code> 下(含有 <code>Podfile</code> 文件) 执行</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod install</span><br></pre></td></tr></table></figure>
-<p>或者</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod update</span><br></pre></td></tr></table></figure>
-</li>
-</ul>
-<p> 此时添加的文件出现在 <code>Dome</code> Pod 的 <code>Development Pods</code> 目录中</p>
-<ul>
-<li><p>从本地验证 pod 是否通过</p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod lib lint</span><br></pre></td></tr></table></figure>
-<p>  如果有警告，可以使用 <code>--private</code> 或者 <code>--allow-warnings</code> 忽略</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">pod lib lint --allow-warnings</span><br><span class="line">pod lib lint --private</span><br></pre></td></tr></table></figure>
-<p> <strong>出现     <code>PPExcelView passed validation.</code> 为通过</strong></p>
-</li>
-<li><p>从远程仓库验证 pod </p>
-  <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pod spec lint</span><br></pre></td></tr></table></figure>
-<p>  <strong>出现     <code>PPExcelView.podspec passed validation</code> 为通过</strong></p>
-</li>
-</ul>
-<h2 id="推送-podspec-文件到私有仓库"><a href="#推送-podspec-文件到私有仓库" class="headerlink" title="推送 .podspec 文件到私有仓库"></a>推送 <code>.podspec</code> 文件到私有仓库</h2><p><code>cd</code> 到 <code>.podspec</code> 所在的文件下</p>
-<pre><code>pod repo push MyGitSpec PPExcelView.podspec
-</code></pre>
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://github.com/aTreey/2017/11/29/CocoaPods制作私有pod/" data-id="cjl8z6ylq00035g81uztiutqc" class="article-share-link">Teilen</a>
+      <a data-url="https://github.com/aTreey/2018/01/10/知识归纳总结/" data-id="cjlgmf6o5002bbbfwsz46zlhp" class="article-share-link">Teilen</a>
       
       
     </footer>
@@ -1099,23 +1014,23 @@ EmotionKeyboard.podspec passed validation.
       <ul>
         
           <li>
+            <a href="/2018/08/30/Swift错误处理/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/25/Swift协议别名/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/25/Swift协议扩展/">(no title)</a>
+          </li>
+        
+          <li>
+            <a href="/2018/08/25/Swift下标和运算符重载/">(no title)</a>
+          </li>
+        
+          <li>
             <a href="/2018/08/22/iOS通过URL获取HTML中标题/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/08/17/GCD 信号量/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/26/ReactNative中ref使用/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/26/ES6语法/">(no title)</a>
-          </li>
-        
-          <li>
-            <a href="/2018/07/19/Swift 协议使用/">(no title)</a>
           </li>
         
       </ul>
